@@ -1,0 +1,22 @@
+{
+  "extends": "tsconfig/react-library.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@edw/drupal": ["./src"],
+      "@edw/drupal/*": ["./src/*"],
+      "@edw/base": ["./node_modules/@edw/base/src"],
+      "@edw/base/*": ["./node_modules/@edw/base/src/*"]
+    }
+  },
+  "include": [
+    "**/*.d.ts",
+    "**/*.ts",
+    "**/*.js",
+    "**/*.tsx",
+    "**/*.jsx",
+    "**/*.mjs",
+    "**/.eslintrc.js"
+  ],
+  "exclude": ["node_modules", "dist", "build"]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "website-frontend",
+  "version": "1.0.0",
+  "description": "Monorepo for the development of Drupal frontend",
+  "author": "Tiberiu Ichim",
+  "private": true,
+  "main": "index.js",
+  "license": "GPL",
+  "scripts": {
+    "lint": "turbo lint",
+    "lint:fix": "turbo lint:fix",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "type-check": "turbo run type-check",
+    "prettier": "prettier",
+    "start:prod": "sh ./scripts/build_startbuild.sh",
+    "prepare": "husky install"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "resolutions": {
+    "utf-8-validate": "^5.0.2"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*",
+    "eslint-config-custom": "workspace:*",
+    "@types/jest": "^29.5.8",
+    "@types/node": "^18.11.10",
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.9",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.1.0",
+    "turbo": "^1.10.12",
+    "typescript": "5.4.5"
+  },
+  "packageManager": "pnpm@8.15.7"
+}

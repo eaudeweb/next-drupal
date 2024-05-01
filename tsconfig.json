@@ -1,0 +1,22 @@
+{
+  "extends": "tsconfig/base.json",
+  "root": true,
+  "include": [
+    "**/*.d.ts",
+    "**/*.ts",
+    "**/*.js",
+    "**/*.tsx",
+    "**/*.jsx",
+    "**/*.mjs",
+    "**/.eslintrc.js"
+  ],
+  "compilerOptions": {
+    "paths": {
+      "@edw/base": ["./packages/base/src"],
+      "@edw/base/*": ["./packages/base/src/*"],
+      "@edw/drupal": ["./packages/drupal/src"],
+      "@edw/drupal/*": ["./packages/drupal/src/*"]
+    }
+  },
+  "exclude": ["**/node_modules", "**/dist", "**/build"]
+}

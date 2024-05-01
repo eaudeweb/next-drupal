@@ -1,0 +1,24 @@
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="4 0 214 133">
+  <g id="meeting icon">
+    <circle id="Ellipse 1852" cx="187" cy="21" r="18" stroke="#002A3C" stroke-width="6"></circle>
+    <circle id="Ellipse 2333" cx="111" cy="21" r="18" stroke="#002A3C" stroke-width="6"></circle>
+    <path id="Ellipse 2334"
+      d="M52 21C52 31.0097 44.0972 39 34.5 39C24.9028 39 17 31.0097 17 21C17 10.9903 24.9028 3 34.5 3C44.0972 3 52 10.9903 52 21Z"
+      stroke="#002A3C" stroke-width="6"></path>
+    <path id="Vector 6"
+      d="M109.895 48C88.021 48 82.1841 62 82 69C106.968 62.3684 131.07 66.2368 140 69C139.079 62 131.77 48 109.895 48Z"
+      stroke="#002A3C" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path id="Vector 7"
+      d="M37.2752 48C58.4679 48 66.7248 64.0185 67 72.7222C32.0459 79.3889 17.4587 95.5 7 108V74.1111C7 61.6111 16.0826 48 37.2752 48Z"
+      stroke="#002A3C" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path id="Vector 8"
+      d="M184.22 48C162.674 48 154.28 64.0185 154 72.7222C189.537 79.3889 204.367 95.5 215 108V74.1111C215 61.6111 205.766 48 184.22 48Z"
+      stroke="#002A3C" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path>
+    <circle id="Ellipse 2345" cx="147" cy="130" r="3" fill="#002A3C"></circle>
+    <circle id="Ellipse 2346" cx="156" cy="130" r="3" fill="#002A3C"></circle>
+    <circle id="Ellipse 2347" cx="166" cy="130" r="3" fill="#002A3C"></circle>
+    <path id="Vector 5"
+      d="M175.746 130H210C209.724 112.933 169.116 81 110.552 81C50.3315 81 16.0773 110.455 10 130H138.177"
+      stroke="#002A3C" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path>
+  </g>
+</svg>

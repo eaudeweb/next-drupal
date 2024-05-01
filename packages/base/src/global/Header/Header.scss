@@ -1,0 +1,22 @@
+.header {
+  .container {
+    --container-padding-inline: 0px;
+    max-width: 100%;
+  }
+
+  > .ant-row {
+    width: 100%;
+
+    > .ant-col > a {
+      display: flex;
+    }
+  }
+
+  .ant-menu {
+    justify-content: flex-end;
+  }
+}
+
+.header__menu-item {
+  padding: 42px 0;
+}

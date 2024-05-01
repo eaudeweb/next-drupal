@@ -1,0 +1,23 @@
+html,
+body,
+.site-layout.ant-layout {
+  min-height: 100vh;
+}
+
+.site-layout {
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  > .ant-layout-content {
+    position: relative;
+  }
+
+  .ant-layout-header {
+    z-index: 2;
+    max-width: 100%;
+
+    &:has(.header--mobile) {
+      width: 100%;
+    }
+  }
+}

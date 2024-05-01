@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "*.css": "postcss"
+  },
+  "scss.lint.validProperties": ["custom-media"],
+  "css.customData": [".vscode/css_custom_data.json"]
+}

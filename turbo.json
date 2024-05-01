@@ -1,0 +1,45 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    "**/.env.*local"
+  ],
+  "globalDotEnv": [
+    "**/.env"
+  ],
+  "globalEnv": [
+    "NODE_ENV",
+    "NEXT_PUBLIC_DRUPAL_BASE_URL",
+    "DRUPAL_PREVIEW_SECRET",
+    "DRUPAL_REVALIDATE_SECRET",
+    "UNSTABLE_DRUPAL_ACCESS_TOKEN",
+    "NEXT_IMAGE_DOMAIN",
+    "NEXT_PUBLIC_ENVIRONMENT_INDICATOR_NAME",
+    "NEXT_PUBLIC_ENVIRONMENT_INDICATOR_BG_COLOR",
+    "NEXT_PUBLIC_ENVIRONMENT_INDICATOR_FG_COLOR",
+    "DRUPAL_CLIENT_ID",
+    "DRUPAL_CLIENT_SECRET",
+    "NEXT_PUBLIC_DRAFT_REPORT_TERM_IDS",
+    "NEXT_PUBLIC_FRIENDLYCAPTCHA_SITEKEY"
+  ],
+  "pipeline": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**"
+      ]
+    },
+    "type-check": {},
+    "lint": {},
+    "lint:fix": {
+      "cache": false
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "test": {}
+  }
+}

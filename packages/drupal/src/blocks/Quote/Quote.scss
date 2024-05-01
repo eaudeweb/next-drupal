@@ -1,0 +1,16 @@
+.quote {
+  background-color: #f9f9f9;
+  border-left: 4px solid #4a90e2;
+  margin: 20px 0;
+  padding: 20px;
+
+  > .ant-typography {
+    font-style: italic;
+  }
+
+  &__title {
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: right;
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Next.js",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "${configDir}/new-types.d.ts",
+    "${configDir}/next-env.d.ts",
+    "${configDir}/.next/types/**/*.ts",
+    "${configDir}/**/*.d.ts",
+    "${configDir}/../**/*.d.ts",
+    "${configDir}/../../**/*.d.ts",
+    "${configDir}/**/*.ts",
+    "${configDir}/**/*.js",
+    "${configDir}/**/*.tsx",
+    "${configDir}/**/*.jsx",
+    "${configDir}/**/*.mjs",
+    "${configDir}/**/*.test.js",
+    "${configDir}.eslintrc.js"
+  ],
+  "exclude": [
+    "${configDir}/node_modules",
+    "${configDir}/dist",
+    "${configDir}/build"
+  ]
+}

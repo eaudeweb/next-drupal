@@ -1,0 +1,15 @@
+import { DrupalParagraph } from 'next-drupal'
+
+import { parseAndTransformRichText } from '@edw/base'
+
+type FactBlock = {
+  paragraph: DrupalParagraph
+}
+
+const Fact: React.FC<FactBlock> = ({ paragraph }) => {
+  const content = paragraph?.field_description?.value
+    ? parseAndTransformRichText(paragraph.field_description.value)
+    : ''
+  return <div>{content}</div>
+}
+export default Fact

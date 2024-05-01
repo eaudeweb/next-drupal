@@ -1,0 +1,19 @@
+.columns-paragraph {
+  --column-gap: 30px;
+
+  margin-left: calc(var(--column-gap) / -2);
+  margin-right: calc(var(--column-gap) / -2);
+
+  @media (--breakpoint) {
+    --column-gap: 60px;
+  }
+
+  > .column {
+    padding-left: calc(var(--column-gap) / 2);
+    padding-right: calc(var(--column-gap) / 2);
+
+    .column {
+      margin-top: 0;
+    }
+  }
+}
