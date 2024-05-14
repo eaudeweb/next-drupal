@@ -3,7 +3,10 @@ const perfRules = require('./perfRules')
 const isProduction = process.env.NODE_ENV === 'production'
 const ignoreInProduction = ['*.stories.ts', '*.stories.tsx']
 
-const project = [`${__dirname}/../*/tsconfig.json`]
+const project = [
+  `${__dirname}/../*/tsconfig.json`,
+  `${__dirname}/../../apps/*/tsconfig.json`,
+]
 
 module.exports = {
   env: {
@@ -66,6 +69,7 @@ module.exports = {
     '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
+    'import/no-named-as-default': 'off',
     'import/no-unresolved': 'error', // @todo Miu: delete this line
     'prettier/prettier': ['error', {}],
     'react/prop-types': 'off',

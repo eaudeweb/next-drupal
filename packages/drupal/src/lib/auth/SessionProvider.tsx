@@ -1,38 +1,58 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 
+import { notification } from 'antd'
 import {
   SessionProvider as NextSessionProvider,
-  SessionContextValue,
-  signOut,
   useSession,
 } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 
-import { usePrevious } from '@edw/base/hooks'
+import { DrupalLink } from '@edw/base'
 
+import { broadcast } from '.'
 import { drupal } from '../drupal'
 
 function SessionProviderWorker() {
   const session = useSession()
-  const router = useRouter()
-  const prevSession = usePrevious<SessionContextValue>(session)
+  const [api, contextHolder] = notification.useNotification()
+
+  const handle = useCallback(
+    (e: MessageEvent) => {
+      if (['signIn', 'signOut'].includes(e.data.event)) {
+        api.open({
+          description: (
+            <>
+              You {e.data.event === 'signIn' ? 'signed in' : 'signed out'} with
+              another tab or window.{' '}
+              <DrupalLink
+                onClick={(e) => {
+                  e.preventDefault()
+                  window.location.reload()
+                }}
+              >
+                Reload
+              </DrupalLink>{' '}
+              to refresh your session.
+            </>
+          ),
+          duration: 0,
+          message: 'Session Update',
+        })
+        // window.location.reload()
+      }
+    },
+    [api],
+  )
+
+  useEffect(() => {
+    broadcast().addEventListener('message', handle)
+    return () => broadcast().removeEventListener('message', handle)
+  }, [handle])
 
   useEffect(() => {
     drupal.session = session.data
-    if (session.data?.error) {
-      signOut()
-      return
-    }
-    if (
-      session.status === 'unauthenticated' &&
-      prevSession?.status === 'authenticated'
-    ) {
-      router.refresh()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
-  return null
+  return contextHolder
 }
 
 export default function SessionProvider({ children, initialSession }: any) {

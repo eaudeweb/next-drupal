@@ -5,14 +5,19 @@ import parse, { Element } from 'html-react-parser'
 import DOMPurify from 'isomorphic-dompurify'
 import Image from 'next/image'
 
-import { DrupalLink, EntityEmbed, createBaseUrl } from '@edw/base'
+import {
+  DrupalLink,
+  EntityEmbed,
+  createBaseURL,
+  textNodesOnly,
+} from '@edw/base'
 
 type TransformFunction = (
   domNode: Element,
   stripLinks?: boolean,
 ) => ReactElement | undefined
 
-const transformElementWithNesting = (domNode: Element, stripLinks = false) => {
+const _transformElementWithNesting = (domNode: Element, stripLinks = false) => {
   if (!domNode) return null
 
   if (domNode instanceof Element && transformConfig[domNode.name]) {
@@ -23,7 +28,7 @@ const transformElementWithNesting = (domNode: Element, stripLinks = false) => {
     const childrenElems = domNode.children.map((child, key) => {
       return (
         <Fragment key={key}>
-          {transformElementWithNesting(child as Element, stripLinks)}
+          {_transformElementWithNesting(child as Element, stripLinks)}
         </Fragment>
       )
     })
@@ -43,7 +48,7 @@ const transformLink: TransformFunction = (domNode, stripLinks) => {
   const childrenElements = domNode?.children?.map((child, key) => {
     return (
       <Fragment key={key}>
-        {transformElementWithNesting(child as Element, stripLinks)}
+        {_transformElementWithNesting(child as Element, stripLinks)}
       </Fragment>
     )
   })
@@ -72,7 +77,7 @@ const transformLink: TransformFunction = (domNode, stripLinks) => {
 const transformImage: TransformFunction = (domNode) => {
   if (domNode.attribs && domNode.attribs.src) {
     const imgSrc = domNode?.attribs?.src
-      ? createBaseUrl(domNode.attribs.src)
+      ? createBaseURL(domNode.attribs.src)
       : ''
     const width =
       domNode.attribs.width && domNode.attribs.width !== 'auto'
@@ -112,7 +117,7 @@ const transformP: TransformFunction = (domNode, stripLinks = false) => {
   const childrenElements = domNode?.children?.map((child, key) => {
     return (
       <Fragment key={key}>
-        {transformElementWithNesting(child as Element, stripLinks)}
+        {_transformElementWithNesting(child as Element, stripLinks)}
       </Fragment>
     )
   })
@@ -134,13 +139,68 @@ const transformTable: TransformFunction = (domNode, stripLinks = false) => {
     domNode?.attribs || {
       class: '',
     }
+  const thead =
+    domNode?.children[0] instanceof Element &&
+    domNode?.children[0]?.name == 'thead'
+      ? (domNode?.children[0] as Element)
+      : null
 
-  const childrenElements = domNode.children
-    ? domNode.children.map((child, key) => {
+  const theadRow = thead?.children[0] as Element
+  const headers = thead ? theadRow.children : null
+
+  const columns = headers?.map((th: Element, key) => {
+    return {
+      key: key,
+      title: textNodesOnly(serialize(th?.children)),
+    }
+  })
+
+  const childrenElements = domNode?.children
+    ? domNode.children.map((child: Element, key) => {
+        if (!columns || child?.name != 'tbody') {
+          return (
+            <Fragment key={key}>
+              {_transformElementWithNesting(child as Element, stripLinks)}
+            </Fragment>
+          )
+        }
+
+        const rows = child?.children
         return (
-          <Fragment key={key}>
-            {transformElementWithNesting(child as Element, stripLinks)}
-          </Fragment>
+          <tbody key={key}>
+            {rows?.map((row: Element, rowKey) => {
+              const RowTag = row.name as React.ElementType
+              return (
+                <RowTag {...row.attribs} key={rowKey}>
+                  {row.children.map((cell: Element, cellKey) => {
+                    const CellTag = cell.name as React.ElementType
+                    const cellContent =
+                      (cell?.children &&
+                        _transformElementWithNesting(
+                          cell?.children as unknown as Element,
+                        )) ||
+                      ''
+                    const isNotEmpty =
+                      textNodesOnly(cellContent as string).trim().length > 0
+
+                    return (
+                      <CellTag {...cell.attribs} key={cellKey}>
+                        {isNotEmpty && (
+                          <>
+                            <div className="responsive-cell__title">
+                              {columns[cellKey]?.title}
+                            </div>
+
+                            {cellContent}
+                          </>
+                        )}
+                      </CellTag>
+                    )
+                  }, [])}
+                </RowTag>
+              )
+            })}
+          </tbody>
         )
       })
     : null
@@ -163,7 +223,6 @@ const transformConfig: Record<string, TransformFunction> = {
   table: transformTable,
   // transformations can be added here
 }
-
 export const parseAndTransformRichText = (
   html: string,
   stripLinks?: boolean,

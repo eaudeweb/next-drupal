@@ -1,0 +1,18 @@
+.edw.ant-row {
+  margin-left: calc(-1 * var(--ant-row-gutter-x, 0));
+  margin-right: calc(-1 * var(--ant-row-gutter-x, 0));
+  row-gap: var(--ant-row-gutter-y, 0);
+
+  .ant-col {
+    padding-left: var(--ant-row-gutter-x, 0);
+    padding-right: var(--ant-row-gutter-x, 0);
+
+    .column-inner {
+      height: 100%;
+
+      > .container-paragraph:only-child {
+        height: 100%;
+      }
+    }
+  }
+}

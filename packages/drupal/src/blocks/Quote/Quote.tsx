@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { textNodesOnly } from '@edw/base'
 import { Teaser } from '@edw/drupal'
 
 import QuoteIcon from './quote.svg'
@@ -19,7 +20,7 @@ const Quote: React.FC<Props> = ({ paragraph }) => {
   const descriptionTransformed = (
     <>
       <h4 className="quote-content">
-        {paragraph?.field_description?.processed?.replace(/(<([^>]+)>)/gi, '')}
+        {textNodesOnly(paragraph?.field_description?.processed || '')}
       </h4>
       <div className="author h9">{paragraph.field_title}</div>
     </>

@@ -1,4 +1,4 @@
-import breakpoints from './styles/breakpoints.module.scss'
+import breakpoints from './styles/vars/breakpoints.module.scss'
 
 const baseBreakpoints = Object.fromEntries(
   Object.entries(breakpoints).map(([k, v]) => [k, parseInt(v)]),

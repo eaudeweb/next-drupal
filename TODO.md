@@ -5,9 +5,9 @@
 #### Packages
 
 - [ ] Remove beta versions for the following packages:
-  - [ ] `typescript@5.5.0-dev` - this version adds a [${configDir}](https://devblogs.microsoft.com/typescript/announcing-typescript-5-5-beta/#the-configdir-template-variable-for-configuration-files) parameter that can be used to dynamicaly write tsconfig.json files. @razvanMiu
 - [ ] Upgrate packages:
   - [ ] `next-auth@5.0.0` - still in beta - here is a guide to [migrating-to-v5](https://authjs.dev/getting-started/migrating-to-v5). @razvanMiu
+  - [ ] `typescript@5.5.0-dev` - this version adds a [${configDir}](https://devblogs.microsoft.com/typescript/announcing-typescript-5-5-beta/#the-configdir-template-variable-for-configuration-files) parameter that can be used to dynamicaly write tsconfig.json files. @razvanMiu
 
 #### Authentication
 
@@ -15,8 +15,8 @@ Some of these are very unlikely to happen.
 
 - [ ] Fix: when access_token expired, refresh_token still valid, if changing the current page and closing the window before SSR finished, the session will be lost. **Might be imposible to solve**. @razvanMiu
 - [ ] Fix: when access_token expired, refresh_token still valid, if fast changing between 2 or more tabs of the same application the session will be lost because multiple requests to refresh the token will be sent with the same refresh_token. **Might be imposible to solve**. @razvanMiu
-- [ ] Fix: when multiple tabs of the same application are opened, sign-in in one tab (TAB-1) will trigger a broadcast event to other tabs. When clicking on an inactive tab (TAB-2) after sign-in in the previous tab (TAB-1) initially the session state update doesn't propagate. Activating another tab (TAB-3) and then comming back to (TAB-2) triggers the session state update. @razvanMiu
-- [ ] Fix: when multiple tabs of the same application are opened, sign-in in one tab should trigger a refresh in the other tabs. This will fix the bug above. This behavior works on sign-out. @razvanMiu
+- [x] Fix: when multiple tabs of the same application are opened, sign-in in one tab (TAB-1) will trigger a broadcast event to other tabs. When clicking on an inactive tab (TAB-2) after sign-in in the previous tab (TAB-1) initially the session state update doesn't propagate. Activating another tab (TAB-3) and then comming back to (TAB-2) triggers the session state update. @razvanMiu
+- [x] Fix: when multiple tabs of the same application are opened, sign-in in one tab should trigger a refresh in the other tabs. This will fix the bug above. This behavior works on sign-out. @razvanMiu
 
 #### Others
 

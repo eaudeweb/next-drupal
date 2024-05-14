@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { createBaseUrl, removeDrupalLinkPrefixes } from '@edw/base'
+import { createBaseURL, removeDrupalLinkPrefixes } from '@edw/base'
 import { Image, ParagraphWithImageMedia, RichText, Teaser } from '@edw/drupal'
 
 interface CardProps {
@@ -27,7 +27,7 @@ const Card: React.FC<CardProps> = ({ paragraph }) => {
     field_title: title,
   } = paragraph
 
-  const imgUrl = createBaseUrl(media?.field_media_image?.uri?.url)
+  const imgUrl = createBaseURL(media?.field_media_image?.uri?.url)
 
   const originalUri = link?.uri
 

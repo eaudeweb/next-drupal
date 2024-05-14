@@ -3,9 +3,73 @@ import type { NextAuthOptions, Session } from 'next-auth'
 
 import NextAuth from 'next-auth'
 import { JWT } from 'next-auth/jwt'
+import {
+  BuiltInProviderType,
+  RedirectableProviderType,
+} from 'next-auth/providers/index'
+import {
+  LiteralUnion,
+  signIn as NextAuthSignIn,
+  signOut as NextAuthSignOut,
+  SignInAuthorizationParams,
+  SignInOptions,
+  SignOutParams,
+} from 'next-auth/react'
 
 import { drupal } from '../drupal'
 import DrupalCredentialsProvider from './providers/DrupalCredentials'
+
+let broadcastChannel: BroadcastChannel | null = null
+
+function postMessage(event: string) {
+  broadcast().postMessage({
+    event,
+  })
+}
+
+export function broadcast() {
+  if (typeof BroadcastChannel === 'undefined') {
+    return {
+      addEventListener: () => {},
+      postMessage: () => {},
+      removeEventListener: () => {},
+    }
+  }
+
+  if (broadcastChannel === null) {
+    broadcastChannel = new BroadcastChannel('next-auth')
+  }
+
+  return broadcastChannel
+}
+
+export async function signIn<
+  P extends RedirectableProviderType | undefined = undefined,
+>(
+  provider?: LiteralUnion<
+    P extends RedirectableProviderType
+      ? BuiltInProviderType | P
+      : BuiltInProviderType
+  >,
+  options?: { broadcast?: boolean } & SignInOptions,
+  authorizationParams?: SignInAuthorizationParams,
+) {
+  const result = await NextAuthSignIn(provider, options, authorizationParams)
+  if (options?.broadcast ?? true) {
+    postMessage('signIn')
+  }
+  return result
+}
+
+export async function signOut<R extends boolean = true>(
+  options?: { broadcast?: boolean } & SignOutParams<R>,
+) {
+  const result = await NextAuthSignOut(options)
+  if (options?.broadcast ?? true) {
+    postMessage('signOut')
+  }
+  return result
+}
 
 async function refreshAccessToken(token: JWT) {
   const clientId = process.env.DRUPAL_CLIENT_ID || ''
@@ -38,11 +102,6 @@ async function refreshAccessToken(token: JWT) {
       },
     }
   }
-
-  console.log(
-    '== refreshAccessToken ==',
-    data.access_token?.substr(data.access_token.length - 5),
-  )
 
   return {
     ...token,

@@ -4,7 +4,7 @@ import cx from 'classnames'
 
 import { Container, type DefaultLayoutProps } from '@edw/base'
 import { useIsHomepage } from '@edw/base/lib/useIsHomepage'
-import { EnvironmentIndicator, UserToolbar } from '@edw/base/molecules'
+import { EnvironmentIndicator } from '@edw/base/molecules'
 
 import Error from '../Errors/Error'
 
@@ -22,7 +22,6 @@ export function DefaultLayout({
       <Layout>
         <ReactQueryDevtools initialIsOpen={false} />
         <EnvironmentIndicator />
-        <UserToolbar />
       </Layout>
       <Layout className={cx('default-layout', { 'is-homepage': isHomepage })}>
         <Header>{header}</Header>

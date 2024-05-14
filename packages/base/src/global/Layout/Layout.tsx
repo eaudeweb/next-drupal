@@ -8,7 +8,7 @@ import { AppStateProvider } from '@edw/base/contexts'
 import { queryClient } from '@edw/base/helpers'
 
 import { useIsHomepage } from '../../lib/useIsHomepage'
-import { EnvironmentIndicator, UserToolbar } from '../../molecules'
+import { EnvironmentIndicator } from '../../molecules'
 
 import './Layout.scss'
 
@@ -30,7 +30,6 @@ export function SiteLayout({
           <Layout>
             <ReactQueryDevtools initialIsOpen={false} />
             <EnvironmentIndicator />
-            <UserToolbar />
           </Layout>
           <Layout
             className={`site-layout${useIsHomepage() ? ' is-homepage' : ''}`}

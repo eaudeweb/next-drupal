@@ -1,6 +1,10 @@
 import { Viewer, Worker } from '@react-pdf-viewer/core'
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout'
 
+import packageJson from '../../../package.json'
+
+const pdfjsVersion = packageJson.dependencies['pdfjs-dist'].replace(/[~^]/g, '')
+
 import { withClientOnly } from '../../lib/withClientOnly'
 
 import './PDFViewer.scss'
@@ -14,7 +18,9 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ url }) => {
 
   return (
     <div className="pdf-viewer">
-      <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.16.105/build/pdf.worker.js">
+      <Worker
+        workerUrl={`https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.js`}
+      >
         <div className="pdf-viewer-inner">
           <Viewer fileUrl={url} plugins={[defaultLayoutPluginInstance]} />
         </div>

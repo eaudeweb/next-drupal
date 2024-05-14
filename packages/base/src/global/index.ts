@@ -1,5 +1,4 @@
 export * from './AppHead'
-export * from './BasicHeader/BasicHeader'
 export * from './Footer/Footer'
 export * from './Header/Header'
 export * from './Layout/Layout'

@@ -48,6 +48,7 @@ export function formatDatesAsInterval(startDate: string, endDate: string) {
     formattedStartDate.getMonth() === formattedEndDate.getMonth() &&
     formattedStartDate.getFullYear() === formattedEndDate.getFullYear()
   ) {
+    if (startDay == endDay) return `${startDay} ${startMonth}, ${year}`
     return `${startDay}-${endDay} ${startMonth}, ${year}`
   }
 

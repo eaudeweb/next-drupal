@@ -1,0 +1,121 @@
+name: Deploy TEST instance
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - test
+
+env:
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_REPOSITORY }}
+  PROJECT_DIR: ${{ secrets.TEST_PROJECT_DIR }}
+  SITE_URL: ${{ secrets.TEST_NEXT_BASE_URL }}
+  VERSION: 'test'
+
+jobs:
+  test-build:
+    uses: ./.github/workflows/lib.test-build.yml
+
+  build:
+    name: "Build image"
+    needs: test-build
+    runs-on:
+      labels: 'drupal'
+    steps:
+      -
+        name: 'Check out repository'
+        uses: actions/checkout@v3
+      -
+        name: 'Login to Docker Hub'
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: 'Build Docker image'
+        run: |
+          docker build . --file .docker/Dockerfile \
+          --tag $IMAGE_NAME \
+          --build-arg APP_NAME=$APP_NAME \
+          --build-arg NEXT_PUBLIC_ENVIRONMENT_INDICATOR_NAME=$ENVIRONMENT_INDICATOR_NAME \
+          --build-arg NEXT_PUBLIC_ENVIRONMENT_INDICATOR_BG_COLOR=$ENVIRONMENT_INDICATOR_BG_COLOR \
+          --build-arg NEXT_PUBLIC_ENVIRONMENT_INDICATOR_FG_COLOR=$ENVIRONMENT_INDICATOR_FG_COLOR \
+          --build-arg NEXT_PUBLIC_DRUPAL_BASE_URL=$DRUPAL_BASE_URL \
+          --build-arg NEXT_IMAGE_DOMAIN=$DRUPAL_IMAGE_DOMAIN \
+          --build-arg DRUPAL_REVALIDATE_SECRET=$DRUPAL_REVALIDATE_SECRET \
+          --build-arg DRUPAL_CLIENT_ID=$DRUPAL_CLIENT_ID \
+          --build-arg DRUPAL_CLIENT_SECRET=$DRUPAL_CLIENT_SECRET \
+          --build-arg NEXTAUTH_URL=$NEXTAUTH_URL \
+          --build-arg NEXTAUTH_SECRET=$NEXTAUTH_SECRET \
+          --build-arg NEXT_PUBLIC_FRIENDLYCAPTCHA_SITEKEY=$FRIENDLYCAPTCHA_SITEKEY \
+          --build-arg NEXT_PUBLIC_DRAFT_REPORT_TERM_IDS=$DRAFT_REPORT_TERM_IDS
+        env:
+          APP_NAME: ${{ vars.APP_NAME }}
+          ENVIRONMENT_INDICATOR_NAME: ${{ vars.TEST_ENVIRONMENT_INDICATOR_NAME }}
+          ENVIRONMENT_INDICATOR_BG_COLOR: ${{ vars.TEST_ENVIRONMENT_INDICATOR_BG_COLOR }}
+          ENVIRONMENT_INDICATOR_FG_COLOR: ${{ vars.TEST_ENVIRONMENT_INDICATOR_FG_COLOR }}
+          DRUPAL_BASE_URL: ${{ vars.TEST_DRUPAL_BASE_URL }}
+          DRUPAL_IMAGE_DOMAIN: ${{ vars.TEST_DRUPAL_IMAGE_DOMAIN }}
+          DRUPAL_REVALIDATE_SECRET: ${{ secrets.TEST_DRUPAL_REVALIDATE_SECRET }}
+          DRUPAL_CLIENT_ID: ${{ secrets.DRUPAL_CLIENT_ID }}
+          DRUPAL_CLIENT_SECRET: ${{ secrets.DRUPAL_CLIENT_SECRET }}
+          NEXTAUTH_URL: ${{ vars.TEST_NEXT_BASE_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          FRIENDLYCAPTCHA_SITEKEY: ${{ secrets.FRIENDLYCAPTCHA_SITEKEY }}
+          DRAFT_REPORT_TERM_IDS: ${{ vars.DRAFT_REPORT_TERM_IDS }}
+      -
+        name: 'Push image to DockerHub registry'
+        run: |
+          docker tag $IMAGE_NAME $IMAGE_NAME:${{ env.VERSION }}
+          docker push $IMAGE_NAME:${{ env.VERSION }}
+
+  deploy:
+    name: 'Deploy image'
+    needs: build
+    runs-on:
+      labels: 'drupal'
+    steps:
+      -
+        name: 'Check out repository'
+        uses: actions/checkout@v3
+      -
+        name: 'Configure SSH'
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/server.key
+          chmod 600 ~/.ssh/server.key
+          cat > ~/.ssh/config <<END
+          Host server
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/server.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.TEST_SSH_USER }}
+          SSH_HOST: ${{ secrets.TEST_SSH_HOST }}
+          SSH_KEY:  ${{ secrets.TEST_SSH_KEY }}
+        shell: bash
+      -
+        name: 'Copy Docker configuration'
+        run: |
+          scp .docker/compose.yaml server:${{ env.PROJECT_DIR }}/
+          ssh server 'cd ${{ env.PROJECT_DIR }} && \
+            sed -i.bak "s+TODO_GITHUB_RELEASE_ID+${{ env.VERSION }}+g" compose.yaml'
+      -
+        name: 'Pull latest Docker images'
+        run: |
+          ssh server "echo $DOCKERHUB_TOKEN | docker login --username $DOCKERHUB_USERNAME --password-stdin && \
+            cd ${{ env.PROJECT_DIR }} && docker compose pull && docker compose up -d --force-recreate"
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        shell: bash
+      -
+        name: 'Discord notification on failed deploy'
+        if: failure()
+        run: >
+          curl -X POST -F
+          "content=:octagonal_sign: **${{ github.repository }}** release **${{ github.ref_name }}** failed to deploy on ${{ env.SITE_URL }}.
+          [view action run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+          ${{ secrets.DISCORD_WEBHOOK }}

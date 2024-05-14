@@ -15,7 +15,11 @@
       "@edw/base": ["./packages/base/src"],
       "@edw/base/*": ["./packages/base/src/*"],
       "@edw/drupal": ["./packages/drupal/src"],
-      "@edw/drupal/*": ["./packages/drupal/src/*"]
+      "@edw/drupal/*": ["./packages/drupal/src/*"],
+      "@edw/mlf": ["./apps/multilateralfund"],
+      "@edw/mlf/*": ["./apps/multilateralfund/*"],
+      "@edw/idra": ["./apps/idralliance"],
+      "@edw/idra/*": ["./apps/idralliance/*"]
     }
   },
   "exclude": ["**/node_modules", "**/dist", "**/build"]

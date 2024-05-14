@@ -6,6 +6,8 @@ const packages = [
   'eslint-config-custom',
 ]
 
+const apps = ['@edw/mlf', '@edw/idra']
+
 const perfRules = {
   'perfectionist/sort-array-includes': 'error',
   'perfectionist/sort-enums': 'error',
@@ -33,11 +35,11 @@ const perfRules = {
           react: ['react react-* next'],
         },
         value: {
-          // 'internal-type': apps.reduce((acc, app) => {
-          //   acc.push(`${app}/**/@types`)
-          //   acc.push(`${app}/**/@types/**`)
-          //   return acc
-          // }, []),
+          'internal-type': apps.reduce((acc, app) => {
+            acc.push(`${app}/**/@types`)
+            acc.push(`${app}/**/@types/**`)
+            return acc
+          }, []),
           react: ['react', 'react-*'],
           config: ['**/config', '*/config/**'],
           packages: packages.reduce((acc, pkg) => {
@@ -50,14 +52,14 @@ const perfRules = {
           server: ['server-only'],
         },
       },
-      // 'internal-pattern': apps.reduce(
-      //   (acc, app) => {
-      //     acc.push(app)
-      //     acc.push(`${app}/**`)
-      //     return acc
-      //   },
-      //   ['~/**'],
-      // ),
+      'internal-pattern': apps.reduce(
+        (acc, app) => {
+          acc.push(app)
+          acc.push(`${app}/**`)
+          return acc
+        },
+        ['~/**'],
+      ),
       'newlines-between': 'always',
     },
   ],

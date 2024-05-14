@@ -121,6 +121,9 @@ export const useSearchApp = (
   if (searchIndex === 'news' && sort?.date?.field) {
     djap.addSort(sort.date.field)
   }
+  if (searchIndex === 'news' && sort?.relevance?.field) {
+    djap.addSort(sort.relevance.field)
+  }
 
   // MEETINGS
   if (searchIndex === 'meetings') {

@@ -8,13 +8,15 @@ export function formatDate(
     year: 'numeric',
   },
   timeFormat?: Intl.DateTimeFormatOptions,
+  locales?: string,
 ): string {
   const date = new Date(input)
-  const dateString = date.toLocaleDateString('en-US', format)
+  const selectedLocales = locales || 'en-US'
+  const dateString = date.toLocaleDateString(selectedLocales, format)
 
   if (timeFormat) {
     const timeString = date
-      .toLocaleTimeString('en-US', timeFormat)
+      .toLocaleTimeString(selectedLocales, timeFormat)
       .toLowerCase()
     return `${dateString} ${timeString}`
   } else {

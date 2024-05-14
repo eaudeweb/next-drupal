@@ -1,7 +1,7 @@
 import type { DocumentDrupalMedia, Paragraph } from '@edw/drupal'
 
-// @todo Miu: cylic dependency
-// import { GroupedFiles } from '../../../../../apps/multilateralfund/components/files/GroupedFiles'
+// @ts-ignore
+import { GroupedFiles } from '../../../../../apps/multilateralfund/components/files/GroupedFiles'
 
 import './DocumentReferenceParagraph.scss'
 
@@ -24,7 +24,7 @@ const DocumentReferenceParagraph: React.FC<DocumentReferenceParagraphProps> = ({
       {paragraph.field_media_entities.map((doc, k) => (
         <div key={k} className="document-reference-paragraph-item">
           <div className="h7">{doc.name}</div>
-          {/* <GroupedFiles files={doc?.pseudo_files} /> */}
+          <GroupedFiles files={doc?.pseudo_files} />
           <div className="border-bottom--secondary"></div>
         </div>
       ))}

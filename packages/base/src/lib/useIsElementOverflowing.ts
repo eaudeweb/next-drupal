@@ -1,25 +1,32 @@
 import { useEffect, useState } from 'react'
 
+import { debounce } from '../helpers'
+
 export const useIsElementOverflowing = (element: any) => {
   const [isOverflowing, setIsOverflowing] = useState<boolean>(false)
 
   useEffect(() => {
     const checkOverflow = () => {
-      if (element) {
-        setIsOverflowing(element.scrollWidth > element.clientWidth)
-      }
+      debounce(
+        () => {
+          if (element) {
+            setIsOverflowing(
+              element.offsetLeft + element.offsetWidth >
+                document.documentElement.offsetWidth,
+            )
+          }
+        },
+        200,
+        'checkOverflow',
+      )
     }
 
-    const resizeObserver = new ResizeObserver(checkOverflow)
+    checkOverflow()
 
-    if (element) {
-      resizeObserver.observe(element)
-    }
-
-    checkOverflow() // Initial check
+    window.addEventListener('resize', checkOverflow)
 
     return () => {
-      resizeObserver.disconnect()
+      window.removeEventListener('resize', checkOverflow)
     }
   }, [element])
 

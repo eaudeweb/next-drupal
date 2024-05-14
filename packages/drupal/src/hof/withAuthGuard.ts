@@ -9,6 +9,7 @@ const getAccessTokenExpired = (session: any) => {
 }
 
 const withAuthGuard = (...fns: any) => {
+  console.log('withAuthGuard:', fns)
   const getProps = fns[0]
   return async (context: any) => {
     const session = await getServerSession(
@@ -17,6 +18,9 @@ const withAuthGuard = (...fns: any) => {
       authOptions,
     )
 
+    // Get props from the wrapped getServerSideProps
+    const value = (getProps && (await getProps(context))) || {}
+
     const unauthorized = !session || getAccessTokenExpired(session)
 
     if (unauthorized) {
@@ -24,7 +28,9 @@ const withAuthGuard = (...fns: any) => {
         context.res.statusCode = 401
       }
       return {
+        ...value,
         props: {
+          ...(value.props || {}),
           error: {
             message: 'Unauthorized',
             statusCode: 401,
@@ -32,9 +38,6 @@ const withAuthGuard = (...fns: any) => {
         },
       }
     }
-
-    // Get props from the wrapped getServerSideProps
-    const value = (getProps && (await getProps(context))) || {}
 
     return value
   }

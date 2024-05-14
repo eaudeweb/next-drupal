@@ -1,3 +1,5 @@
+import { Col, Row } from 'antd'
+
 import Error401 from './401'
 import Error403 from './403'
 import Error404 from './404'
@@ -18,11 +20,20 @@ export default function Error({ children, error }: any) {
       return <Error500 />
     default:
       return statusCode ? (
-        <p>
-          {statusCode
-            ? `An error ${statusCode} occurred on server`
-            : 'An error occurred on client'}
-        </p>
+        <div className={`error-${statusCode}`}>
+          <Row align="middle" justify="center">
+            <Col>
+              <div className="global">
+                <h1>{statusCode}</h1>
+                <p>
+                  {statusCode
+                    ? `An error occurred on server`
+                    : 'An error occurred on client'}
+                </p>
+              </div>
+            </Col>
+          </Row>
+        </div>
       ) : (
         <ErrorBoundary>{children}</ErrorBoundary>
       )

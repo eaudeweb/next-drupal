@@ -1,0 +1,20 @@
+name: Validate build
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    name: 'Test build'
+    runs-on:
+      labels: 'drupal'
+    steps:
+      - 
+        name: 'Check out repository'
+        uses: actions/checkout@v3
+      -
+        name: 'Install dependencies'
+        run: make install
+      -
+        name: 'Static code analysis'
+        run: pnpm turbo run lint

@@ -50,7 +50,7 @@ const EventDefault = ({ entity }: any) => {
               `${field_event_city}${field_country ? ', ' : ''}`}
             {field_country?.name}
             {/* @todo: refactor all meeting info into one component */}
-            {field_event_presence == 'hybrid' && ` (${field_event_presence})`}
+            {field_event_presence == 'virtual' && ` (Online)`}
             {!field_event_venue &&
               !field_event_city &&
               !field_country &&

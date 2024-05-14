@@ -1,3 +1,3 @@
-import colors from './styles/colors.module.scss'
+import colors from './styles/vars/colors.module.scss'
 
 export default colors

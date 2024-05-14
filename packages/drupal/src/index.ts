@@ -10,6 +10,7 @@ import {
   Announcement,
   BlockItem,
   Card,
+  Carousel,
   Columns,
   ContainerParagraph,
   ContentReference,
@@ -20,11 +21,12 @@ import {
   Quote,
   RichText,
   SearchBlock,
+  Tab,
+  Tabs,
   Timeline,
   TimelineItem,
   ViewReference,
 } from './blocks'
-import Banner from './blocks/Banner/Banner'
 import {
   DefaultTemplate,
   EventDefaultTemplate,
@@ -118,14 +120,14 @@ export function applyConfig(
       'paragraph--edw_announcement': {
         view: Announcement,
       },
-      'paragraph--edw_banner': {
-        view: Banner,
-      },
       'paragraph--edw_block_item': {
         view: BlockItem,
       },
       'paragraph--edw_card': {
         view: Card,
+      },
+      'paragraph--edw_carousel': {
+        view: Carousel,
       },
       'paragraph--edw_columns': {
         view: Columns,
@@ -160,6 +162,12 @@ export function applyConfig(
       },
       'paragraph--edw_rich_text': {
         view: RichText,
+      },
+      'paragraph--edw_tab': {
+        view: Tab,
+      },
+      'paragraph--edw_tabs': {
+        view: Tabs,
       },
       'paragraph--edw_timeline': {
         view: Timeline,

@@ -43,5 +43,3 @@ export const AppHead: React.FC<AppHead> = ({
     </Head>
   )
 }
-
-export default AppHead

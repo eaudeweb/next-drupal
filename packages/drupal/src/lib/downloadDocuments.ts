@@ -1,4 +1,4 @@
-import { createBaseUrl } from '@edw/base'
+import { createBaseURL } from '@edw/base'
 
 export const downloadDocuments = (
   ids: string[],
@@ -11,7 +11,7 @@ export const downloadDocuments = (
     language: language.join(','),
   }).toString()
 
-  const url = createBaseUrl(`/download/documents?${queryParams}`)
+  const url = createBaseURL(`/download/documents?${queryParams}`)
 
   if (url) {
     window.open(url, '_blank')

@@ -5,8 +5,12 @@ import { getDrupalResourceFromContext } from '../lib/content'
 
 const withDrupalNodeResources = (...fns: any) => {
   const getProps = fns[0]
+
   return async (context: any) => {
     let node: any
+
+    // Get props from the wrapped getServerSideProps
+    const value = (getProps && (await getProps(context))) || {}
 
     const slug = context?.params?.slug as string[]
 
@@ -17,7 +21,9 @@ const withDrupalNodeResources = (...fns: any) => {
         context.res.statusCode = e.statusCode || 500
       }
       return {
+        ...value,
         props: {
+          ...(value.props || {}),
           error: {
             message: e.message || 'Something went wrong',
             statusCode: e.statusCode || 500,
@@ -38,9 +44,6 @@ const withDrupalNodeResources = (...fns: any) => {
         },
       }
     }
-
-    // Get props from the wrapped getServerSideProps
-    const value = (getProps && (await getProps(context))) || {}
 
     return {
       ...value,
