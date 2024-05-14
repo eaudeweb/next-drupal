@@ -5,7 +5,7 @@ const ignoreInProduction = ['*.stories.ts', '*.stories.tsx']
 
 const project = [
   `${__dirname}/../*/tsconfig.json`,
-  `${__dirname}/../../apps/*/tsconfig.json`,
+  `${__dirname}/tsconfig.json`,
 ]
 
 module.exports = {
