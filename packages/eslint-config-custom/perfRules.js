@@ -1,4 +1,7 @@
 /* eslint-disable perfectionist/sort-objects */
+const getFile = require('./utils').getFile
+
+let packageJson, internalPaths
 const packages = [
   '@edw/base',
   '@edw/drupal',
@@ -6,7 +9,12 @@ const packages = [
   'eslint-config-custom',
 ]
 
-const apps = ['@edw/mlf', '@edw/idra']
+try {
+  packageJson = getFile(process.cwd(), 'package.json')
+  internalPaths = packageJson.internalPaths || []
+} catch (e) {
+  internalPaths = []
+}
 
 const perfRules = {
   'perfectionist/sort-array-includes': 'error',
@@ -35,7 +43,7 @@ const perfRules = {
           react: ['react react-* next'],
         },
         value: {
-          'internal-type': apps.reduce((acc, app) => {
+          'internal-type': internalPaths.reduce((acc, app) => {
             acc.push(`${app}/**/@types`)
             acc.push(`${app}/**/@types/**`)
             return acc
@@ -52,7 +60,7 @@ const perfRules = {
           server: ['server-only'],
         },
       },
-      'internal-pattern': apps.reduce(
+      'internal-pattern': internalPaths.reduce(
         (acc, app) => {
           acc.push(app)
           acc.push(`${app}/**`)

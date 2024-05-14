@@ -1,12 +1,18 @@
+const getFilePath = require('./utils').getFilePath
 const perfRules = require('./perfRules')
+
+let currentProject
 
 const isProduction = process.env.NODE_ENV === 'production'
 const ignoreInProduction = ['*.stories.ts', '*.stories.tsx']
 
-const project = [
-  `${__dirname}/../*/tsconfig.json`,
-  `${__dirname}/tsconfig.json`,
-]
+try {
+  currentProject = [getFilePath(process.cwd(), 'tsconfig.json')]
+} catch (e) {
+  currentProject = []
+}
+
+const project = [`${__dirname}/../*/tsconfig.json`, ...currentProject]
 
 module.exports = {
   env: {
