@@ -8,7 +8,9 @@ on:
 
 jobs:
   build:
-    name: 'QA / linting'
+    name: 'Test build'
+    runs-on:
+      labels: 'drupal'
     steps:
       - name: 'Check out repository'
         uses: actions/checkout@v3
