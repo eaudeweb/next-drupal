@@ -1,26 +1,147 @@
-# MultilateralFund Website
-
-## Prerequisites
-
-* NVM https://github.com/nvm-sh/nvm
+# Next-drupal
 
 ## Getting started
 
-1. Copy `apps/multilateralfund/.env.example` to `apps/multilateralfund/.env` and customise `NEXT_PUBLIC_DRUPAL_BASE_URL` and `NEXT_IMAGE_DOMAIN` with the URL and domain of the Drupal website.\
-Local Drupal website can be used e.g:
-```
-   NEXT_PUBLIC_DRUPAL_BASE_URL=https://multilateralfund.ddev.site:14443/
-   NEXT_IMAGE_DOMAIN=multilateralfund.ddev.site
+There is no release for any of the packages under this repo. To use it please make use of mrs-developer.
+
+1. Install [Nextjs](https://nextjs.org/docs/getting-started/installation) project using `pages` directory. Note: only `next@13.x.x` is supported because of next-auth dependency.
+
+2. Add the following scripts under your `package.json`:
+
+```json
+{
+   "scripts": {
+      ...etc,
+      "develop": "npx --yes -p mrs-developer missdev --output=../workspaces --no-config",
+      "develop:npx": "npx --yes -p mrs-developer missdev --output=../workspaces --no-config"
+   }
+}
 ```
 
-2. Run:
+3. Add `pnpm-workspace.yaml` file in your project root, containing:
 
-```bash
-nvm install
-nvm use
-npm install -g pnpm
-make install
-make dev
+```yaml
+packages:
+  - 'workspaces/**/packages/*'
+```
+
+4. Add desired dependencies:
+```json
+{
+   "dependencies": {
+      "@edw/base": "workspace:*",
+      "@edw/drupal": "workspace:*",
+   },
+   "devDependencies": {
+      "eslint-config-custom": "workspace:*",
+      "tsconfig": "workspace:*",
+   }
+}
+```
+
+5. Define `.eslintrc.js`. Override with your project necessities. This requires `eslint-config-custom` package.
+
+```js
+module.exports = {
+  extends: ['custom/next'],
+  rules: {
+      'react/no-unescaped-entities': 'off',
+  },
+  ...etc
+}
+```
+
+6. Define `tsconfig.json`. Override with your project necessities. This requires `tsconfig` package.
+
+```json
+{
+   "extends": "tsconfig/nextjs.json",
+   ...etc
+}
+```
+
+7. For eslint perfectionist plugin add `internalPaths` under your `package.json` file:
+
+```json
+{
+   ...etc,
+   "internalPaths": [
+      "@",
+      "~",
+      "@idra"
+   ]
+}
+```
+
+8. Bootstrap global config in your `pages/_app.tsx` file
+
+```ts
+import { config } from '@edw/base/src'
+import { type DrupalConfigRegistry } from '@edw/drupal/src'
+
+import installSite from '@/siteconfig'
+
+Object.assign(
+  config as DrupalConfigRegistry,
+  installSite(config as DrupalConfigRegistry),
+)
+```
+
+9. Configure `pages/_app.tsx`:
+```tsx
+import { App as BaseApp, DefaultLayout } from '@edw/base/src/components'
+import { withAuthInitialSession } from '@edw/drupal/src/hof'
+import { SessionProvider } from '@edw/drupal/src/lib/auth'
+
+...etc
+
+export default function App({
+  Component,
+  pageProps: { initialSession, ...pageProps },
+}: AppProps): React.JSX.Element {
+  const { breadcrumb, error, menus, node } = pageProps
+
+  return (
+    <BaseApp initialAppState={{ breadcrumb, menus, node }} theme={theme()}>
+      <SessionProvider initialSession={initialSession}>
+         <DefaultLayout
+            error={error}
+            header={<YourHeader />}
+            footer={<YourFooter />}
+         >
+            <Component {...pageProps} />
+         </DefaultLayout>
+      </SessionProvider>
+    </BaseApp>
+  )
+}
+
+
+App.getInitialProps = withAuthInitialSession()
+```
+
+10. Configure `pages/[[...slug]].tsx`
+
+```tsx
+import {
+  compose,
+  withDrupalCommonResources,
+  withDrupalNodeResources,
+} from '@edw/drupal/src/hof'
+
+...etc
+
+export const getServerSideProps = compose(
+  withDrupalCommonResources,
+  withDrupalNodeResources,
+)()
+```
+
+11. Define `pages/api/auth/[...nextauth].ts` apis for next-auth:
+
+```ts
+import NextAuth from '@edw/drupal/src/lib/auth'
+export default NextAuth
 ```
 
 ## Technology stack
