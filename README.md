@@ -11,7 +11,6 @@ There is no release for any of the packages under this repo. To use it please ma
 ```json
 {
    "scripts": {
-      ...etc,
       "develop": "npx --yes -p mrs-developer missdev --output=../workspaces --no-config",
       "develop:npx": "npx --yes -p mrs-developer missdev --output=../workspaces --no-config"
    }
@@ -56,7 +55,6 @@ module.exports = {
 ```json
 {
    "extends": "tsconfig/nextjs.json",
-   ...etc
 }
 ```
 
@@ -64,7 +62,6 @@ module.exports = {
 
 ```json
 {
-   ...etc,
    "internalPaths": [
       "@",
       "~",
