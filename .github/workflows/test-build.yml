@@ -12,37 +12,9 @@ jobs:
     runs-on:
       labels: 'drupal'
     steps:
-      -
-        name: 'Check out repository'
+      - name: 'Check out repository'
         uses: actions/checkout@v3
-      -
-        name: 'Install dependencies'
+      - name: 'Install dependencies'
         run: make install
-      -
-        name: 'Static code analysis'
+      - name: 'Static code analysis'
         run: pnpm turbo run lint
-      -
-        name: 'Build Docker image'
-        run: |
-          docker build . --file .docker/Dockerfile \
-          --build-arg APP_NAME=$APP_NAME \
-          --build-arg NEXT_PUBLIC_DRUPAL_BASE_URL=$DRUPAL_BASE_URL \
-          --build-arg NEXT_IMAGE_DOMAIN=$DRUPAL_IMAGE_DOMAIN \
-          --build-arg DRUPAL_REVALIDATE_SECRET=$DRUPAL_REVALIDATE_SECRET \
-          --build-arg DRUPAL_CLIENT_ID=$DRUPAL_CLIENT_ID \
-          --build-arg DRUPAL_CLIENT_SECRET=$DRUPAL_CLIENT_SECRET \
-          --build-arg NEXTAUTH_URL=$NEXTAUTH_URL \
-          --build-arg NEXTAUTH_SECRET=$NEXTAUTH_SECRET \
-          --build-arg NEXT_PUBLIC_FRIENDLYCAPTCHA_SITEKEY=$FRIENDLYCAPTCHA_SITEKEY \
-          --build-arg NEXT_PUBLIC_DRAFT_REPORT_TERM_IDS=$DRAFT_REPORT_TERM_IDS
-        env:
-          APP_NAME: ${{ vars.APP_NAME }}
-          DRUPAL_BASE_URL: ${{ vars.PROD_DRUPAL_BASE_URL }}
-          DRUPAL_IMAGE_DOMAIN: ${{ vars.PROD_DRUPAL_IMAGE_DOMAIN }}
-          DRUPAL_REVALIDATE_SECRET: ${{ secrets.PROD_DRUPAL_REVALIDATE_SECRET }}
-          DRUPAL_CLIENT_ID: ${{ secrets.DRUPAL_CLIENT_ID }}
-          DRUPAL_CLIENT_SECRET: ${{ secrets.DRUPAL_CLIENT_SECRET }}
-          NEXTAUTH_URL: ${{ vars.PROD_NEXT_BASE_URL }}
-          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-          FRIENDLYCAPTCHA_SITEKEY: ${{ secrets.FRIENDLYCAPTCHA_SITEKEY }}
-          DRAFT_REPORT_TERM_IDS: ${{ vars.DRAFT_REPORT_TERM_IDS }}

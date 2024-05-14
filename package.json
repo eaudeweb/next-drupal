@@ -1,5 +1,5 @@
 {
-  "name": "website-frontend",
+  "name": "next-drupal",
   "version": "1.0.0",
   "description": "Monorepo for the development of Drupal frontend",
   "author": "Tiberiu Ichim",
@@ -18,8 +18,7 @@
     "prepare": "husky install"
   },
   "workspaces": [
-    "packages/*",
-    "apps/*"
+    "packages/*"
   ],
   "resolutions": {
     "utf-8-validate": "^5.0.2"

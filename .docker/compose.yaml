@@ -1,8 +1,0 @@
-services:
-  frontend:
-    # TODO_GITHUB_RELEASE_ID replaced automatically during deployment
-    image: ${CONTAINER_APP_IMAGE}:TODO_GITHUB_RELEASE_ID
-    container_name: ${CONTAINER_APP_NAME}
-    restart: unless-stopped
-    ports:
-      - 127.0.0.1:${CONTAINER_APP_PORT}:3000
