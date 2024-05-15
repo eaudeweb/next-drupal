@@ -1,0 +1,98 @@
+@mixin font-light() {
+  font-weight: 300;
+}
+
+@mixin font-normal() {
+  font-weight: 400;
+}
+
+@mixin font-medium() {
+  font-weight: 500;
+}
+
+@mixin font-semi-bold() {
+  font-weight: 600;
+}
+
+@mixin font-bold() {
+  font-weight: 700;
+}
+
+@mixin body() {
+  --ant-font-size: var(--body-font-size);
+  line-height: 125%;
+  font-style: normal;
+
+  @media (--breakpoint) {
+    line-height: 135%;
+  }
+}
+
+@mixin small-body {
+  --ant-font-size: var(--small-body-font-size);
+  font-style: normal;
+  line-height: 135%;
+}
+
+@mixin h1 {
+  --ant-font-size: var(--h1-font-size);
+  line-height: 98%;
+  letter-spacing: -0.01em;
+}
+
+@mixin h2 {
+  --ant-font-size: var(--h2-font-size);
+  line-height: 110%;
+  letter-spacing: -0.01em;
+
+  @media (--breakpoint) {
+    line-height: 85%;
+  }
+}
+
+@mixin h3 {
+  --ant-font-size: var(--h3-font-size);
+  line-height: 110%;
+}
+
+@mixin h4 {
+  --ant-font-size: var(--h4-font-size);
+  line-height: 100%;
+}
+
+@mixin h5 {
+  --ant-font-size: var(--h5-font-size);
+  line-height: 110%;
+}
+
+@mixin h6 {
+  --ant-font-size: var(--h6-font-size);
+  font-family: var(--font-roboto-condensed);
+  line-height: 110%;
+  letter-spacing: 0.01em;
+}
+
+@mixin h7 {
+  --ant-font-size: var(--h7-font-size);
+  line-height: 110%;
+}
+
+@mixin h8 {
+  --ant-font-size: var(--h8-font-size);
+  font-family: var(--font-roboto-condensed);
+  line-height: 110%;
+  letter-spacing: 1px;
+}
+
+@mixin h9 {
+  --ant-font-size: var(--h9-font-size);
+  font-family: var(--font-roboto-condensed);
+  line-height: 110%;
+  letter-spacing: 1px;
+}
+
+@mixin stat {
+  --ant-font-size: var(--stat-font-size);
+  line-height: 85%;
+  letter-spacing: -0.01em;
+}

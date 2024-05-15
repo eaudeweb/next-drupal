@@ -5,6 +5,7 @@ let packageJson, internalPaths
 const packages = [
   '@edw/base',
   '@edw/drupal',
+  '@edw/next-drupal',
   'tsconfig',
   'eslint-config-custom',
 ]
@@ -43,11 +44,18 @@ const perfRules = {
           react: ['react react-* next'],
         },
         value: {
-          'internal-type': internalPaths.reduce((acc, app) => {
-            acc.push(`${app}/**/@types`)
-            acc.push(`${app}/**/@types/**`)
-            return acc
-          }, []),
+          'internal-type': [
+            ...internalPaths.reduce((acc, app) => {
+              acc.push(`${app}/**/@types`)
+              acc.push(`${app}/**/@types/**`)
+              return acc
+            }, []),
+            ...packages.reduce((acc, pkg) => {
+              acc.push(`${pkg}/**/@types`)
+              acc.push(`${pkg}/**/@types/**`)
+              return acc
+            }, []),
+          ],
           react: ['react', 'react-*'],
           config: ['**/config', '*/config/**'],
           packages: packages.reduce((acc, pkg) => {

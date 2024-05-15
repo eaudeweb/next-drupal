@@ -1,0 +1,83 @@
+/* PopoverRangeSearch */
+.popover-pag-listing-container {
+  padding: 28px 44px;
+}
+
+.popover-pag-container {
+  min-width: 350px;
+}
+
+.popover-pag-header {
+  align-items: center;
+  display: flex;
+  font-weight: bold;
+  justify-content: space-between;
+}
+
+.popover-page-selected-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 20px;
+  gap: 1em;
+  text-transform: uppercase;
+
+  .start,
+  .end {
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+  }
+}
+
+.popover-pag-nav-button {
+  border: none;
+  height: 50px;
+  width: 100%;
+}
+
+.popover-pag-selected {
+  background-color: #c3cbcd;
+  border: none;
+  height: 50px;
+  border: none;
+  width: 100%;
+}
+
+.popover-pag-in-range {
+  background-color: #f4f5f4;
+  border: none;
+  height: 50px;
+  border: none;
+  width: 100%;
+}
+
+.popover-pag-button-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.popover-pag-label {
+  font-size: 14px;
+}
+
+.popover-pag-date {
+  font-size: 8px;
+}
+
+.popover-button-clear {
+  position: absolute;
+  top: 33%;
+  right: 14px;
+  color: black;
+  cursor: pointer;
+}
+
+.popover-container {
+  position: relative;
+  width: 100%;
+}
+
+.popover-pag-no-items-container {
+  padding: 15px;
+}

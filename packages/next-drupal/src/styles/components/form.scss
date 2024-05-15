@@ -1,0 +1,31 @@
+.edw .widget,
+.widget {
+  &:not(:last-child) {
+    margin-block-end: 1rem;
+  }
+
+  label {
+    display: inline-block;
+    margin-block-end: 0.25rem;
+  }
+
+  .error {
+    --ant-color-text: var(--ant-color-error);
+    margin-block: 0.5rem;
+    font-size: 12px;
+  }
+
+  &.error {
+    --ant-color-text: var(--ant-color-error);
+    color: var(--ant-color-text);
+  }
+
+  .frc-captcha {
+    max-width: 100%;
+    border-radius: var(--ant-border-radius);
+
+    &.error {
+      border-color: var(--ant-color-error);
+    }
+  }
+}

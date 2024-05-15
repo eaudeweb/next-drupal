@@ -1,0 +1,47 @@
+.container {
+  --default-container-padding-inline: 28px;
+  --container-padding-inline: var(--default-container-padding-inline);
+  --container-mw: calc(
+    var(--container-large) + 2 * var(--container-padding-inline)
+  );
+  width: 100%;
+  padding-inline: var(--container-padding-inline);
+  max-width: var(--container-mw, 100%);
+  margin-inline: auto;
+
+  @media (--breakpoint) {
+    --default-container-padding-inline: 30px;
+  }
+}
+
+.container
+  .container:not(.banner__top):not(.banner__content):not(
+    .full-width > .container
+  ) {
+  padding-inline: 0;
+  --container-padding-inline: 0px;
+}
+
+.container-small {
+  --container-mw: calc(
+    var(--container-small) + 2 * var(--container-padding-inline)
+  );
+}
+
+.container-medium {
+  --container-mw: calc(
+    var(--container-medium) + 2 * var(--container-padding-inline)
+  );
+}
+
+.container-large {
+  --container-mw: calc(
+    var(--container-large) + 2 * var(--container-padding-inline)
+  );
+}
+
+.full-width {
+  .container {
+    padding-inline: var(--container-padding-inline);
+  }
+}

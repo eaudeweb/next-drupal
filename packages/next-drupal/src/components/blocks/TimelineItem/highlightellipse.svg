@@ -1,0 +1,16 @@
+<svg width="139" height="223" viewBox="0 0 139 223" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <circle cx="27.5" cy="111.5" r="111.5" fill="#EBFF00" />
+    <circle cx="27.5" cy="110.5" r="93.5" fill="#5EB2D7" />
+    <ellipse cx="27.5" cy="110.5" rx="67.5" ry="68.5" fill="#0095D5" />
+    <ellipse cx="27.5" cy="110" rx="47.5" ry="48" fill="#002A3C" />
+    <rect x="-10" y="103" width="35" height="15" fill="white" />
+    <circle cx="27.5" cy="110.5" r="20.5" fill="white" />
+    <circle cx="27.5" cy="110.5" r="32" fill="white" class="mobile-only" />
+  </g>
+  <defs>
+    <clipPath id="clip0_2821_3195">
+      <rect width="139" height="223" fill="white" />
+    </clipPath>
+  </defs>
+</svg>

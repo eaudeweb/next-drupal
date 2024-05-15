@@ -1,0 +1,15 @@
+@custom-media --xs (max-width: 575px);
+@custom-media --below-xs (max-width: 574px);
+@custom-media --sm (min-width: 576px);
+@custom-media --below-sm (max-width: 575px);
+@custom-media --md (min-width: 768px);
+@custom-media --below-md (max-width: 767px);
+@custom-media --lg (min-width: 992px);
+@custom-media --below-lg (max-width: 991px);
+@custom-media --xl (min-width: 1200px);
+@custom-media --below-xl (max-width: 1199px);
+@custom-media --xxl (min-width: 1600px);
+@custom-media --below-xxl (max-width: 1599px);
+
+@custom-media --breakpoint (--md);
+@custom-media --below-breakpoint (max-width: 767px);

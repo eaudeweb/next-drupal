@@ -1,0 +1,79 @@
+.tree-select-filter {
+  &__select {
+    width: 100%;
+  }
+
+  &__mobile-dropdown-container {
+    position: fixed;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100%;
+
+    .ant-select-tree {
+      height: 100%;
+    }
+
+    .ant-select-tree-list-holder-inner {
+      position: inherit !important;
+      transform: none !important;
+      height: 100%;
+    }
+
+    .ant-select-tree-list {
+      height: 100%;
+    }
+
+    .ant-select-tree-list-holder {
+      max-height: 100% !important;
+
+      >div {
+        height: 89vh !important;
+      }
+    }
+
+    >div {
+      height: 100%;
+
+      >div {
+        height: 100%;
+
+        >div:not(.tree-select-filter__dropdown-actions-container) {
+          height: 90%;
+        }
+      }
+    }
+  }
+
+  &__dropdown-container {
+    padding-bottom: 0;
+  }
+
+  &__dropdown-actions {
+    &-container {
+      padding: 10px;
+      background-color: color-mix(in srgb, var(--deep-teal-shade) 85%, transparent);
+    }
+
+    &-submit {
+      --ant-button-default-color: var(--highlighter-yellow) !important;
+      --ant-button-hover-color: black !important;
+    }
+
+    &-cancel {
+    }
+  }
+}
+
+.mlf-theme.ant-tree-select-css-var {
+  --ant-tree-select-title-height: 32px;
+}
+
+.ant-tree-select-dropdown .ant-select-tree .ant-select-tree-treenode {
+  text-transform: uppercase;
+}
+
+.ant-tree-select-dropdown .ant-select-tree .ant-select-tree-checkbox {
+  margin-inline: var(--ant-padding-xs);
+  margin-top: var(--ant-margin-xs);
+}

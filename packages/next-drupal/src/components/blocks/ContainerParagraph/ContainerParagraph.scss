@@ -1,0 +1,26 @@
+.container-paragraph.has-background {
+  background-color: var(--container-background-color);
+  background-image: var(--container-background-image);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-inline: auto;
+}
+
+.container-paragraph__image {
+  position: absolute;
+  inset: 0;
+
+  &.image-paragraph-content {
+    display: block;
+    margin: 0;
+    width: 100%;
+  }
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 0;
+  }
+}
