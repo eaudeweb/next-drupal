@@ -2,8 +2,6 @@ const version = "${version}";
 const packageName = process.env.npm_package_name;
 const scope = packageName.split("/")[1];
 
-console.log(packageName);
-
 module.exports = {
   plugins: {
     "@release-it/conventional-changelog": {
@@ -31,5 +29,6 @@ module.exports = {
   github: {
     release: true,
     releaseName: `${packageName}-v${version}`,
+    assets: ["dist"],
   },
 };
