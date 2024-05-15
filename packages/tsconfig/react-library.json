@@ -7,6 +7,8 @@
     "declaration": true,
     "declarationMap": true,
     "module": "nodenext",
-    "moduleResolution": "nodenext"
+    "moduleResolution": "nodenext",
+    "sourceMap": true,
+    "noEmit": false
   }
 }

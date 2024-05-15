@@ -2,6 +2,8 @@
   "extends": "tsconfig/react-library.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "outDir": "dist",
+    "declarationDir": "dist",
     "paths": {
       "@edw/next-drupal": ["./src"],
       "@edw/next-drupal/*": ["./src/*"]

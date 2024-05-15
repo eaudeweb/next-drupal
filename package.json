@@ -10,6 +10,7 @@
     "lint": "turbo lint",
     "lint:fix": "turbo lint:fix",
     "build": "turbo run build",
+    "release": "turbo release --concurrency=1",
     "dev": "turbo run dev",
     "test": "turbo run test",
     "type-check": "turbo run type-check",
@@ -17,11 +18,10 @@
     "start:prod": "sh ./scripts/build_startbuild.sh",
     "prepare": "husky install"
   },
-  "internalPaths": [
-    "@edw/next-drupal"
-  ],
   "workspaces": [
-    "packages/*"
+    "packages/next-drupal",
+    "packages/base",
+    "packages/drupal"
   ],
   "resolutions": {
     "utf-8-validate": "^5.0.2"
