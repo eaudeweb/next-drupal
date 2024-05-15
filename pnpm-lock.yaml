@@ -71,18 +71,12 @@ importers:
       dom-serializer:
         specifier: ^2.0.0
         version: 2.0.0
-      friendly-challenge:
-        specifier: ^0.9.15
-        version: 0.9.15
       html-react-parser:
         specifier: ^5.1.10
         version: 5.1.10(@types/react@18.3.2)(react@18.3.1)
       isomorphic-dompurify:
         specifier: ^2.7.0
         version: 2.9.0
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
       next:
         specifier: ^13.5.6
         version: 13.5.6(@babel/core@7.24.5)(react-dom@18.3.1)(react@18.3.1)(sass@1.77.1)
@@ -95,9 +89,6 @@ importers:
       pdfjs-dist:
         specifier: 3.4.120
         version: 3.4.120
-      yup:
-        specifier: ^1.4.0
-        version: 1.4.0
     devDependencies:
       '@csstools/postcss-global-data':
         specifier: ^2.1.1
@@ -114,9 +105,6 @@ importers:
       '@turbo/gen':
         specifier: ^1.13.3
         version: 1.13.3(@types/node@20.12.11)(typescript@5.4.5)
-      '@types/lodash':
-        specifier: ^4.17.1
-        version: 4.17.1
       '@types/node':
         specifier: ^20.12.7
         version: 20.12.11
