@@ -1,7 +1,7 @@
 import { Viewer, Worker } from '@react-pdf-viewer/core'
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout'
 
-import packageJson from '@edw/next-drupal/package.json'
+import packageJson from '../../../package.json'
 
 const pdfjsVersion = packageJson.dependencies['pdfjs-dist'].replace(/[~^]/g, '')
 

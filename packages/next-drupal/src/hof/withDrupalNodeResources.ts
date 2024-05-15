@@ -1,7 +1,7 @@
 // HOF for adding common resources to the component by wrapping getServersideProps or getStaticProps
 // e.g. export const getServerSideProps = withDrupalNodeResources(null)
 
-import { getDrupalResourceFromContext } from '../lib/content'
+import { getDrupalResourceFromContext } from '@edw/next-drupal/lib/drupal/content'
 
 const withDrupalNodeResources = (...fns: any) => {
   const getProps = fns[0]
