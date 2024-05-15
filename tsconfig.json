@@ -12,14 +12,12 @@
   ],
   "compilerOptions": {
     "paths": {
+      "@edw/next-drupal": ["./packages/next-drupal/src"],
+      "@edw/next-drupal/*": ["./packages/next-drupal/src/*"],
       "@edw/base": ["./packages/base/src"],
       "@edw/base/*": ["./packages/base/src/*"],
       "@edw/drupal": ["./packages/drupal/src"],
-      "@edw/drupal/*": ["./packages/drupal/src/*"],
-      "@edw/mlf": ["./apps/multilateralfund"],
-      "@edw/mlf/*": ["./apps/multilateralfund/*"],
-      "@edw/idra": ["./apps/idralliance"],
-      "@edw/idra/*": ["./apps/idralliance/*"]
+      "@edw/drupal/*": ["./packages/drupal/src/*"]
     }
   },
   "exclude": ["**/node_modules", "**/dist", "**/build"]

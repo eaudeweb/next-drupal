@@ -1,0 +1,27 @@
+$screenXS: 480;
+$screenSM: 576;
+$screenMD: 768;
+$screenLG: 992;
+$screenXL: 1200;
+$screenXXL: 1600;
+
+:export {
+  defaultBreakpoint: md;
+  screenLG: $screenLG;
+  screenLGMax: $screenXL - 1;
+  screenLGMin: $screenLG;
+  screenMD: $screenMD;
+  screenMDMax: $screenLG - 1;
+  screenMDMin: $screenMD;
+  screenSM: $screenSM;
+  screenSMMax: $screenMD - 1;
+  screenSMMin: $screenSM;
+  screenXL: $screenXL;
+  screenXLMax: $screenXXL - 1;
+  screenXLMin: $screenXL;
+  screenXS: $screenXS;
+  screenXSMax: $screenSM - 1;
+  screenXSMin: $screenXS;
+  screenXXL: $screenXXL;
+  screenXXLMin: $screenXXL;
+}

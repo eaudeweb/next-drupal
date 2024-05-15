@@ -1,0 +1,132 @@
+@use './type' as *;
+
+@mixin documents-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: none;
+  overflow: visible;
+  box-shadow: 0px 10px 20px 0px #00000033;
+  border-radius: 8px;
+
+  > :not(caption) > * {
+    border: none;
+  }
+
+  thead,
+  th,
+  td {
+    border: none;
+  }
+
+  tr:last-child {
+    td:last-child {
+      @media (--breakpoint) {
+        padding-bottom: 20px;
+      }
+    }
+  }
+
+  thead {
+    display: none;
+
+    @media (--breakpoint) {
+      display: table-header-group;
+    }
+  }
+
+  th {
+    background-color: white;
+    border-bottom: none;
+    font-weight: 400;
+    color: var(--deep-teal);
+    padding-top: 20px;
+    padding-bottom: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    vertical-align: top;
+    padding-left: 0;
+
+    @include h8;
+
+    &:not(:first-child) {
+      padding-inline: 15px;
+    }
+
+    &:before {
+      content: none;
+    }
+  }
+
+  td {
+    background-color: white;
+    color: var(--deep-teal);
+    border-bottom: none;
+
+    vertical-align: top;
+    text-align: left;
+
+    padding: 12px 0;
+
+    @media (--breakpoint) {
+      padding-inline: 15px;
+    }
+
+    &:first-child {
+      padding-top: 0;
+      padding-left: 0;
+
+      @media (--breakpoint) {
+        padding-top: 12px;
+      }
+    }
+
+    &:not(:first-child) {
+      font-family: var(--font-roboto-condensed);
+      font-weight: 300;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 17.6px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding-inline: 0;
+
+      @media (--breakpoint) {
+        padding-inline: 15px;
+      }
+    }
+
+    &:before {
+      content: none;
+    }
+
+    @media (--breakpoint) {
+      padding-block: 10px 20px;
+    }
+  }
+
+  tr {
+    display: flex;
+    flex-direction: column;
+
+    @media (--breakpoint) {
+      display: table-row;
+    }
+
+    &:not(:last-child) td {
+      border-bottom: none;
+
+      @media (--breakpoint) {
+        border-bottom: 1.5px solid var(--mlf-blue);
+      }
+    }
+
+    &:not(:first-child) td {
+      padding-top: 20px;
+    }
+  }
+
+  .button--language {
+    margin-inline: 0;
+  }
+}
