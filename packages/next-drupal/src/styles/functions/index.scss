@@ -1,0 +1,3 @@
+@function transparentVar($colorVar, $amount: 100%) {
+  @return color-mix(in srgb, $colorVar $amount, transparent);
+}

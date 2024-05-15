@@ -17,6 +17,9 @@
     "start:prod": "sh ./scripts/build_startbuild.sh",
     "prepare": "husky install"
   },
+  "internalPaths": [
+    "@edw/next-drupal"
+  ],
   "workspaces": [
     "packages/*"
   ],

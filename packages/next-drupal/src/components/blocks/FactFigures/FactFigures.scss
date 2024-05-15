@@ -1,0 +1,48 @@
+.facts-figures--columns {
+  @media (--breakpoint) {
+    margin-bottom: 40px;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 18px;
+
+    @media (--breakpoint) {
+      flex-direction: row;
+    }
+  }
+
+  .visual {
+    position: absolute;
+    left: 0;
+    max-width: 123px;
+    max-height: min(100%, 123px);
+    transform: translateX(-50%);
+
+    @media (--breakpoint) {
+      max-height: 100%;
+      max-width: 161px;
+    }
+  }
+
+  // Is this needed in MLF ??
+  // > div > div {
+  //   padding-block: 16px;
+  //   padding-inline: 92px 20px;
+  //   border-radius: 15px;
+  //   position: relative;
+  //   display: flex;
+  //   align-items: center;
+  //   overflow: hidden;
+  //   min-height: 125px;
+  //   max-width: 100%;
+
+  //   @media (--breakpoint) {
+  //     padding-block: 20px;
+  //     padding-inline: 110px 45px;
+  //     flex: 0 0 max(30%, 294px);
+  //   }
+  // }
+}

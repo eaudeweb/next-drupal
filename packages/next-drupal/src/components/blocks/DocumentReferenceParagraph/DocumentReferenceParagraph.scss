@@ -1,0 +1,15 @@
+.document-reference-paragraph {
+  .grouped-files {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 40px;
+  }
+
+  .grouped-files__section-type {
+    margin-top: 15px;
+  }
+}
+
+.document-reference-paragraph-item:last-child .border-bottom--secondary {
+  margin-bottom: 0;
+}

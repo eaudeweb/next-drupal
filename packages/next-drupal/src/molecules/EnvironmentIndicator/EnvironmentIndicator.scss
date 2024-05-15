@@ -1,0 +1,10 @@
+.environment-indicator-container {
+  --env-indicator-bg-color: #4caf50;
+  --env-indicator-fg-color: #000000;
+
+  padding: 1em;
+  text-align: center;
+  background-color: var(--env-indicator-bg-color);
+  color: var(--env-indicator-fg-color);
+  border-bottom: 2px solid var(--env-indicator-fg-color);
+}
