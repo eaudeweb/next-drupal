@@ -4,6 +4,7 @@ import { DrupalFile } from 'next-drupal'
 
 // @todo: needs to move into app
 // @ts-ignore - cyclic dependency
+// eslint-disable-next-line import/no-unresolved
 import { GroupedFiles } from '../../../../../../apps/multilateralfund/components/files/GroupedFiles'
 interface MediaDocumentProps {
   entity: any

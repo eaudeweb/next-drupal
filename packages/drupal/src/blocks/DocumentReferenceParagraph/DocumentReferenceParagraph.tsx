@@ -1,6 +1,7 @@
 import type { DocumentDrupalMedia, Paragraph } from '@edw/drupal'
 
-// @ts-ignore
+// @ts-ignore - cyclic dependency
+// eslint-disable-next-line import/no-unresolved
 import { GroupedFiles } from '../../../../../apps/multilateralfund/components/files/GroupedFiles'
 
 import './DocumentReferenceParagraph.scss'
