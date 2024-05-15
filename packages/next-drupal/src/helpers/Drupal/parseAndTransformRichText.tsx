@@ -13,7 +13,7 @@ import { textNodesOnly } from '../Html'
 import { createBaseURL } from '../Url'
 
 type TransformFunction = (
-  domNode: Element,
+  domNode: Element | any,
   stripLinks?: boolean,
 ) => ReactElement | undefined
 
@@ -214,6 +214,21 @@ const transformTable: TransformFunction = (domNode, stripLinks = false) => {
   )
 }
 
+const transformText = (domNode) => {
+  const cleanHtml = parse(
+    DOMPurify.sanitize(serialize(domNode), {
+      ADD_TAGS: ['drupal-entity'],
+      FORBID_ATTR: ['style'],
+    }),
+  )
+
+  if (!cleanHtml || cleanHtml === '\u00A0') {
+    return <span className="empty">{cleanHtml}</span>
+  }
+
+  return <Fragment>{cleanHtml}</Fragment>
+}
+
 // configuration
 const transformConfig: Record<string, TransformFunction> = {
   a: transformLink,
@@ -223,6 +238,11 @@ const transformConfig: Record<string, TransformFunction> = {
   table: transformTable,
   // transformations can be added here
 }
+
+const transformConfigByType: Record<string, TransformFunction> = {
+  text: transformText,
+}
+
 export const parseAndTransformRichText = (
   html: string,
   stripLinks?: boolean,
@@ -236,6 +256,8 @@ export const parseAndTransformRichText = (
     replace: (domNode) => {
       if (domNode instanceof Element && transformConfig[domNode.name]) {
         return transformConfig[domNode.name](domNode, stripLinks)
+      } else {
+        return transformConfigByType[domNode.type]?.(domNode, stripLinks)
       }
     },
   })
