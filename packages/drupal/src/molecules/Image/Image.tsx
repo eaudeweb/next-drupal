@@ -2,11 +2,13 @@ import type { ImageDrupalMedia } from '@edw/drupal'
 
 import React from 'react'
 
-import { OptimizedImage, type OptimizedImageProps } from '@edw/base'
-import { createImageURL } from '@edw/base/helpers'
+import {
+  OptimizedImage,
+  type OptimizedImageProps,
+  createBaseUrl,
+} from '@edw/base'
 
 interface ImageProps extends Omit<OptimizedImageProps, 'alt' | 'src'> {
-  alt?: string
   height?: number
   imageStyle?: string
   media?: ImageDrupalMedia
@@ -20,20 +22,24 @@ export const Image: React.FC<ImageProps> = ({
   width,
   ...props
 }): React.ReactElement | null => {
-  const srcPath =
+  const imageUrl =
     imageStyle && media?.field_media_image?.image_style_uri?.[imageStyle]
-      ? `field_media_image.image_style_uri.${imageStyle}`
-      : 'field_media_image.uri.url'
-  const changedPath = 'field_media_image.changed'
+      ? media?.field_media_image?.image_style_uri?.[imageStyle]
+      : createBaseUrl(media?.field_media_image?.uri?.url)
 
-  const imageUrl = createImageURL(media, { changedPath, srcPath })
+  if (!imageUrl) return null
 
-  const imageAlt = media?.field_media_image?.resourceIdObjMeta?.alt || 'alt'
+  const imageAlt = media?.field_media_image?.resourceIdObjMeta?.alt
+    ? media?.field_media_image?.resourceIdObjMeta?.alt
+    : 'alt'
 
-  const sourceHeight =
-    media?.field_media_image?.resourceIdObjMeta?.height ?? 400
+  const sourceHeight = media?.field_media_image?.resourceIdObjMeta?.height
+    ? media.field_media_image.resourceIdObjMeta.height
+    : 400
 
-  const sourceWidth = media?.field_media_image?.resourceIdObjMeta?.width ?? 768
+  const sourceWidth = media?.field_media_image?.resourceIdObjMeta?.width
+    ? media.field_media_image.resourceIdObjMeta.width
+    : 768
 
   const sourceAspectRatio = sourceWidth / sourceHeight
 

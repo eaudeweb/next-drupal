@@ -1,0 +1,73 @@
+@use 'vars';
+@forward 'theme/backToTop';
+@forward 'theme/error';
+@forward 'theme/layout';
+
+html,
+body {
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+:where(h1, .h1),
+:where(h2, .h2),
+:where(h3, .h3),
+:where(h4, .h4),
+:where(h5, .h5),
+:where(h6, .h6) {
+  margin-top: 0;
+}
+
+:where(h1, .h1) {
+  font-size: var(--h1-font-size);
+  margin-bottom: 0.5em;
+}
+
+:where(h2, .h2) {
+  font-size: var(--h2-font-size);
+  margin-bottom: 0.5em;
+}
+
+:where(h3, .h3) {
+  font-size: var(--h3-font-size);
+  margin-bottom: 0.5em;
+}
+
+:where(h4, .h4) {
+  font-size: var(--h4-font-size);
+  margin-bottom: 0.5em;
+}
+
+:where(h5, .h5) {
+  font-size: var(--h5-font-size);
+  margin-bottom: 0.5em;
+}
+
+:where(h6, .h6) {
+  font-size: var(--h6-font-size);
+  margin-bottom: 0.5em;
+}
+
+.full-width {
+  position: relative;
+  right: 50%;
+  left: 50%;
+  width: 100vw !important;
+  max-width: none !important;
+  margin-right: -50vw !important;
+  margin-left: -50vw !important;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+.text-align-center {
+  text-align: center;
+}

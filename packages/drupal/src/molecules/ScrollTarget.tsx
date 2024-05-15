@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 type ScrollTargetProps = {
-  dependencies: any
+  dependencies: any[]
 }
 
 const ScrollTarget: React.FC<ScrollTargetProps> = ({ dependencies }) => {
@@ -13,7 +13,7 @@ const ScrollTarget: React.FC<ScrollTargetProps> = ({ dependencies }) => {
     if (node !== null && !isFirstLoad) {
       node.scrollIntoView({
         behavior: 'smooth',
-        block: 'center',
+        block: 'start',
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

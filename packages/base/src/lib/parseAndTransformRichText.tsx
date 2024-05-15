@@ -8,12 +8,12 @@ import Image from 'next/image'
 import {
   DrupalLink,
   EntityEmbed,
-  createBaseURL,
+  createBaseUrl,
   textNodesOnly,
 } from '@edw/base'
 
 type TransformFunction = (
-  domNode: Element | any,
+  domNode: Element,
   stripLinks?: boolean,
 ) => ReactElement | undefined
 
@@ -77,7 +77,7 @@ const transformLink: TransformFunction = (domNode, stripLinks) => {
 const transformImage: TransformFunction = (domNode) => {
   if (domNode.attribs && domNode.attribs.src) {
     const imgSrc = domNode?.attribs?.src
-      ? createBaseURL(domNode.attribs.src)
+      ? createBaseUrl(domNode.attribs.src)
       : ''
     const width =
       domNode.attribs.width && domNode.attribs.width !== 'auto'
@@ -214,21 +214,6 @@ const transformTable: TransformFunction = (domNode, stripLinks = false) => {
   )
 }
 
-const transformText = (domNode) => {
-  const cleanHtml = parse(
-    DOMPurify.sanitize(serialize(domNode), {
-      ADD_TAGS: ['drupal-entity'],
-      FORBID_ATTR: ['style'],
-    }),
-  )
-
-  if (!cleanHtml || cleanHtml === '\u00A0') {
-    return <span className="empty">{cleanHtml}</span>
-  }
-
-  return <Fragment>{cleanHtml}</Fragment>
-}
-
 // configuration
 const transformConfig: Record<string, TransformFunction> = {
   a: transformLink,
@@ -238,10 +223,6 @@ const transformConfig: Record<string, TransformFunction> = {
   table: transformTable,
   // transformations can be added here
 }
-const transformConfigByType: Record<string, TransformFunction> = {
-  text: transformText,
-}
-
 export const parseAndTransformRichText = (
   html: string,
   stripLinks?: boolean,
@@ -255,8 +236,6 @@ export const parseAndTransformRichText = (
     replace: (domNode) => {
       if (domNode instanceof Element && transformConfig[domNode.name]) {
         return transformConfig[domNode.name](domNode, stripLinks)
-      } else {
-        return transformConfigByType[domNode.type]?.(domNode, stripLinks)
       }
     },
   })

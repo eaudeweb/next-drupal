@@ -2,20 +2,17 @@
 @import 'colors.module';
 
 :root {
-  // Colors
   --current: #{$current};
-  --inherit: #{$inherit};
-  --transparent: #{$transparent};
-  --black: #{$black};
-  --white: #{$white};
   --gray-dark: #{$gray-dark};
+  --inherit: #{$inherit};
   --neutral-black: #{$neutral-black};
   --neutral-divider: #{$neutral-divider};
   --neutral-gray: #{$neutral-gray};
   --neutral-gray-lightest: #{$neutral-gray-lightest};
   --neutral-gray-dark: #{$neutral-gray-dark};
+  --transparent: #{$transparent};
+  --white: #{$white};
 
-  // Breakpoints
   --screen-xs: #{$screenXS}px;
   --screen-sm: #{$screenSM}px;
   --screen-md: #{$screenMD}px;
@@ -23,12 +20,10 @@
   --screen-xl: #{$screenXL}px;
   --screen-xxl: #{$screenXXL}px;
 
-  // Containers
   --container-small: 730px;
   --container-medium: 920px;
   --container-large: 1200px;
 
-  // Font sizes
   --h1-font-size: 80px;
   --h2-font-size: 55px;
   --h3-font-size: 40px;

@@ -15,6 +15,7 @@ import cx from 'classnames'
 import { usePathname, useRouter } from 'next/navigation'
 
 import {
+  Container,
   DrupalLink,
   config,
   generateMenuItems,
@@ -83,18 +84,11 @@ export const Header: React.FC<HeaderProps> = ({
   const router = useRouter()
   const [searchText, setSearchText] = useState('')
 
-  const isFullscreenDrawer = breakpoints.xs
-  const [openDrawer, setOpenDrawer] = useState(false)
-  const cannotHoverRef = useRef(false)
-
   const searchBaseUrl = config?.drupal?.search?.apps?.global_search?.baseUrl
 
   const menuRef = useRef<any>(null)
 
   const [isMenuOverflowing] = useIsElementOverflowing(menuRef?.current)
-
-  const isMobile =
-    cannotHoverRef.current || isFullscreenDrawer || isMenuOverflowing
 
   const onClick = (e: any) => {
     setCurrent(e.key)
@@ -108,6 +102,29 @@ export const Header: React.FC<HeaderProps> = ({
       : []
   }, [menu])
 
+  useEffect(() => {
+    const { parentItem, selectedItem } = findMenuItemAndParent(menu, pathname)
+
+    if (selectedItem?.to) {
+      setCurrent(selectedItem?.to)
+    } else {
+      setCurrent('')
+    }
+    if (parentItem?.to) {
+      setOpenSubsection(parentItem?.to)
+    } else {
+      setOpenSubsection('')
+    }
+  }, [menu, pathname])
+
+  const isFullscreenDrawer = breakpoints.xs
+  const [openDrawer, setOpenDrawer] = useState(false)
+  const cannotHoverRef = useRef(false)
+
+  useEffect(() => {
+    cannotHoverRef.current = window.matchMedia('not (hover: hover)').matches
+  }, [])
+
   const showDrawer = () => {
     setOpenDrawer(true)
   }
@@ -115,6 +132,10 @@ export const Header: React.FC<HeaderProps> = ({
   const onClose = () => {
     setOpenDrawer(false)
   }
+
+  useEffect(() => {
+    onClose()
+  }, [pathname])
 
   const headerLogo = useMemo(() => {
     return (
@@ -200,58 +221,54 @@ export const Header: React.FC<HeaderProps> = ({
     ],
   )
 
-  useEffect(() => {
-    cannotHoverRef.current = window.matchMedia('not (hover: hover)').matches
-  }, [])
-
-  useEffect(() => {
-    onClose()
-  }, [pathname])
-
-  useEffect(() => {
-    const { parentItem, selectedItem } = findMenuItemAndParent(menu, pathname)
-
-    if (selectedItem?.to) {
-      setCurrent(selectedItem?.to)
-    } else {
-      setCurrent('')
-    }
-    if (parentItem?.to) {
-      setOpenSubsection(parentItem?.to)
-    } else {
-      setOpenSubsection('')
-    }
-  }, [menu, pathname])
-
+  const headerRef = useRef<any>(null)
   return (
-    <div className="header">
-      {headerLogo}
-      <div className={cx('header--mobile', { 'visually-hidden': !isMobile })}>
-        <a className="header__hamburger" onClick={showDrawer}>
-          {hamburgerIcon || <MenuOutlined />}
-        </a>
-      </div>
-      <div
-        className={cx('header--desktop', {
-          'visually-hidden': isMobile,
-        })}
-      >
-        {headerMenuContent(false, menuRef)}
-      </div>
-      <Drawer
-        open={openDrawer}
-        rootClassName="header__drawer"
-        title={isFullscreenDrawer && headerLogo}
-        width={cx({
-          '100%': isFullscreenDrawer,
-          '375px': !isFullscreenDrawer,
-        })}
-        onClose={onClose}
-        destroyOnClose
-        {...drawerProps}
-      >
-        {headerMenuContent(true)}
-      </Drawer>
+    <div className="header" ref={headerRef}>
+      {items && items.length > 0 && (
+        <>
+          {(cannotHoverRef.current ||
+            isFullscreenDrawer ||
+            isMenuOverflowing) && (
+            <div className="header--mobile">
+              <Container size="large">
+                <div className="header__content">
+                  {headerLogo}
+                  <a className="header__hamburger" onClick={showDrawer}>
+                    {hamburgerIcon || <MenuOutlined />}
+                  </a>
+                </div>
+                <Drawer
+                  open={openDrawer}
+                  rootClassName="header__drawer"
+                  title={isFullscreenDrawer && headerLogo}
+                  width={cx({
+                    '100%': isFullscreenDrawer,
+                    '375px': !isFullscreenDrawer,
+                  })}
+                  onClose={onClose}
+                  destroyOnClose
+                  {...drawerProps}
+                >
+                  {headerMenuContent(true)}
+                </Drawer>
+              </Container>
+            </div>
+          )}
+          {!cannotHoverRef.current && (
+            <div
+              className={cx({
+                'header--desktop container': true,
+                'visually-hidden': isFullscreenDrawer || isMenuOverflowing,
+              })}
+            >
+              {headerLogo}
+              <div className="header__content">
+                {headerMenuContent(false, menuRef)}
+              </div>
+            </div>
+          )}
+        </>
+      )}
     </div>
   )
 }

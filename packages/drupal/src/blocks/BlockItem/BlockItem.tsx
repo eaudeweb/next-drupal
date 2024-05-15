@@ -17,7 +17,7 @@ const BlockItem = ({ paragraph }: any) => {
   const ViewComponent =
     config?.drupal?.paragraphs?.[paragraphType]?.templates?.[blockType]?.view
 
-  if (!ViewComponent) return <p>There is no block view for id: {blockType}</p>
+  if (!ViewComponent) return <p>There is no view for id: {blockType}</p>
 
   return <ViewComponent paragraph={paragraph} />
 }

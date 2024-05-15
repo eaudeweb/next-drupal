@@ -8,6 +8,7 @@ import { Image, type ParagraphWithImageMedia } from '@edw/drupal'
 import './ImageParagraph.scss'
 
 interface Props extends React.HTMLAttributes<HTMLImageElement> {
+  antProps?: any
   height?: number
   imageStyle?: string
   node?: DrupalNode
@@ -33,7 +34,7 @@ const ImageParagraph: React.FC<Props> = ({
 
   const imageCaption = paragraph.field_media?.field_image_caption
 
-  const { node, ...imageProps } = props // eslint-disable-line @typescript-eslint/no-unused-vars
+  const { antProps, node, ...imageProps } = props // eslint-disable-line @typescript-eslint/no-unused-vars
 
   return (
     <figure

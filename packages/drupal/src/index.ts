@@ -10,7 +10,6 @@ import {
   Announcement,
   BlockItem,
   Card,
-  Carousel,
   Columns,
   ContainerParagraph,
   ContentReference,
@@ -27,6 +26,7 @@ import {
   TimelineItem,
   ViewReference,
 } from './blocks'
+import Banner from './blocks/Banner/Banner'
 import {
   DefaultTemplate,
   EventDefaultTemplate,
@@ -120,14 +120,14 @@ export function applyConfig(
       'paragraph--edw_announcement': {
         view: Announcement,
       },
+      'paragraph--edw_banner': {
+        view: Banner,
+      },
       'paragraph--edw_block_item': {
         view: BlockItem,
       },
       'paragraph--edw_card': {
         view: Card,
-      },
-      'paragraph--edw_carousel': {
-        view: Carousel,
       },
       'paragraph--edw_columns': {
         view: Columns,

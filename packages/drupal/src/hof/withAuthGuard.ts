@@ -9,7 +9,6 @@ const getAccessTokenExpired = (session: any) => {
 }
 
 const withAuthGuard = (...fns: any) => {
-  console.log('withAuthGuard:', fns)
   const getProps = fns[0]
   return async (context: any) => {
     const session = await getServerSession(

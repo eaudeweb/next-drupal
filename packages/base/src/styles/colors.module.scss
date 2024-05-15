@@ -1,25 +1,23 @@
 $current: currentColor;
-$inherit: inherit;
-$transparent: transparent;
-$black: #000000;
-$white: #ffffff;
 $gray-dark: #737b7d;
+$inherit: inherit;
 $neutral-black: #373f41;
 $neutral-divider: #e2e5e6;
 $neutral-gray: #c3cbcd;
 $neutral-gray-lightest: #f4f5f4;
 $neutral-gray-dark: #737b7d;
+$transparent: transparent;
+$white: #ffffff;
 
 :export {
   current: $current;
-  inherit: $inherit;
-  transparent: $transparent;
-  black: $black;
-  white: $white;
   grayDark: $gray-dark;
+  inherit: $inherit;
   neutralBlack: $neutral-black;
   neutralDivider: $neutral-divider;
   neutralGray: $neutral-gray;
   neutralGrayLightest: $neutral-gray-lightest;
   neutralGrayDark: $neutral-gray-dark;
+  transparent: $transparent;
+  white: $white;
 }

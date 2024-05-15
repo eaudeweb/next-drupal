@@ -69,62 +69,60 @@ const FacetedSearch: React.FC<FacetedSearchProps> = ({ searchIndex }) => {
     return originalElement
   }
   return (
-    <>
+    <div className="search-block">
+      {contextHolder}
+      {hasNetworkActivity && <ParagraphLoader />}
+      <SearchFilters
+        appConfig={appConfig}
+        isFetching={isFetching}
+        isPending={isPending}
+        meta={meta}
+        query={query}
+        resetFilters={resetFilters}
+        searchIndex={searchIndex}
+        onChange={onChangeField}
+        onChangeMultiple={onChangeMultipleFields}
+      />
       <ScrollTarget dependencies={query?.page?.offset ?? 0} />
-      <div className="search-block">
-        {contextHolder}
-        {hasNetworkActivity && <ParagraphLoader />}
-        <SearchFilters
-          appConfig={appConfig}
-          isFetching={isFetching}
-          isPending={isPending}
-          meta={meta}
-          query={query}
-          resetFilters={resetFilters}
-          searchIndex={searchIndex}
-          onChange={onChangeField}
-          onChangeMultiple={onChangeMultipleFields}
-        />
-        {hasQuery || items?.length > 0 ? (
-          <>
-            <Container size="small">
-              {!hasNetworkActivity && (
-                <Flex className="results-toolbar border-bottom">
-                  <TotalResults total={total} />
-                  {sortConfigOptions &&
-                    Object.keys(sortConfigOptions).length > 1 &&
-                    searchIndex !== 'news' && (
-                      <Sort
-                        configOptions={sortConfigOptions}
-                        query={query}
-                        onChange={onChangeSort}
-                      />
-                    )}
-                </Flex>
-              )}
-              <SearchListing
-                appConfig={appConfig}
-                meta={meta}
-                results={items || []}
-                searchIndex={searchIndex}
-                searchText={searchText}
-              />
-            </Container>
-            {total > 0 && (
-              <Pagination
-                current={currentPage}
-                itemRender={itemRender}
-                pageSize={appConfig.pageSize}
-                showSizeChanger={false}
-                total={meta.count}
-                onChange={onChangePage}
-                hideOnSinglePage
-              />
+      {hasQuery || items?.length > 0 ? (
+        <>
+          <Container size="small">
+            {!hasNetworkActivity && (
+              <Flex className="results-toolbar border-bottom">
+                <TotalResults total={total} />
+                {sortConfigOptions &&
+                  Object.keys(sortConfigOptions).length > 1 &&
+                  searchIndex !== 'news' && (
+                    <Sort
+                      configOptions={sortConfigOptions}
+                      query={query}
+                      onChange={onChangeSort}
+                    />
+                  )}
+              </Flex>
             )}
-          </>
-        ) : null}
-      </div>
-    </>
+            <SearchListing
+              appConfig={appConfig}
+              meta={meta}
+              results={items || []}
+              searchIndex={searchIndex}
+              searchText={searchText}
+            />
+          </Container>
+          {total > 0 && (
+            <Pagination
+              current={currentPage}
+              itemRender={itemRender}
+              pageSize={appConfig.pageSize}
+              showSizeChanger={false}
+              total={meta.count}
+              onChange={onChangePage}
+              hideOnSinglePage
+            />
+          )}
+        </>
+      ) : null}
+    </div>
   )
 }
 
