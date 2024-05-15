@@ -8,6 +8,8 @@
     padding-right: var(--ant-row-gutter-x, 0);
 
     .column-inner {
+      --ant-row-gutter-x: 0;
+      --ant-row-gutter-y: 0;
       height: 100%;
 
       > .container-paragraph:only-child {
