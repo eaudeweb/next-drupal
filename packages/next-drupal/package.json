@@ -63,6 +63,7 @@
     "release-it": "^17.2.1",
     "sass": "^1.75.0",
     "tsconfig": "workspace:*",
+    "@edw/config-release-it": "workspace:*",
     "typescript": "5.4.5"
   }
 }

@@ -19,9 +19,7 @@
     "prepare": "husky install"
   },
   "workspaces": [
-    "packages/next-drupal",
-    "packages/base",
-    "packages/drupal"
+    "packages/*"
   ],
   "resolutions": {
     "utf-8-validate": "^5.0.2"
