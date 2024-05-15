@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { Skeleton } from 'antd'
 import { JsonApiResource } from 'next-drupal'
 
-// @ts-ignore - cyclic dependency
-import { drupal } from '../../../../drupal/src/lib/drupal'
+import { drupal } from '@edw/next-drupal/lib/drupal'
+
 import MediaDocument from './templates/MediaDocument'
 
 interface EntityEmbedProps {

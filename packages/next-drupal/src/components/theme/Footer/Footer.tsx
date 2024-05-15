@@ -24,4 +24,4 @@ export const Footer: FC<FooterProps> = ({ children, containerSize, logo }) => {
   )
 }
 
-// TODO: test cases footer & other simple reusable components
+export default Footer

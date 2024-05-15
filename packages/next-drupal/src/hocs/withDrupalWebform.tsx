@@ -1,6 +1,6 @@
 import { Skeleton } from 'antd'
 
-import useDrupalApi from '../hooks/useDrupalApi'
+import { useDrupalApi } from '../hooks'
 
 function SkeletonWebform() {
   const labelStyle = { width: '100px' }

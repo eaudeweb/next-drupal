@@ -1,4 +1,7 @@
-import type { AutoCompleteData, AutoCompleteResults } from '../types'
+import type {
+  AutoCompleteData,
+  AutoCompleteResults,
+} from '@edw/next-drupal/@types'
 
 import { useQuery } from '@tanstack/react-query'
 
