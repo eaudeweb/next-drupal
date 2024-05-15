@@ -25,14 +25,16 @@
     "utf-8-validate": "^5.0.2"
   },
   "devDependencies": {
-    "tsconfig": "workspace:*",
-    "eslint-config-custom": "workspace:*",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "@types/jest": "^29.5.8",
     "@types/node": "^18.11.10",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
+    "eslint-config-custom": "workspace:*",
     "husky": "^8.0.0",
     "lint-staged": "^15.1.0",
+    "tsconfig": "workspace:*",
     "turbo": "^1.10.12",
     "typescript": "5.4.5"
   },
