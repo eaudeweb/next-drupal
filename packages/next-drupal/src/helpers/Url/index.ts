@@ -1,5 +1,10 @@
 import { PropertyPath, get } from 'lodash'
-import { DrupalNode } from 'next-drupal'
+
+export * from './drupal'
+
+export const isInternalUrl = (url: string): boolean => {
+  return !/^(https?:\/\/|www\.)/.test(url)
+}
 
 export const getAbsoluteURL = (input: string): string => {
   return `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}${input}`
@@ -10,8 +15,8 @@ export const createBaseURL = (
 ): null | string => {
   if (!relativePath) return null
 
-  const isAbsolute = /^(https?:\/\/)/.test(relativePath)
-  if (isAbsolute) {
+  const isInternal = isInternalUrl(relativePath)
+  if (!isInternal) {
     return relativePath
   }
 
@@ -44,28 +49,8 @@ export const createImageURL = (
     : `${imageSrc}?changed=${imageChanged}`
 }
 
-export const nodeToPath = (node: DrupalNode): string => {
-  const { path } = node
-  const id = node.drupal_internal__nid
-  return path?.alias ?? `/node/${id}`
-}
-
-export const removeDrupalLinkPrefixes = (input: string): string => {
-  const prefixes = ['internal:', 'entity:', 'base:']
-  for (const prefix of prefixes) {
-    if (input.startsWith(prefix)) {
-      return input.slice(prefix.length)
-    }
-  }
-  return input
-}
-
 export const isFileDownloadUrl = (url: string): boolean => {
   // check if the URL ends with a dot followed by a file extension
   const regex = /\.\w+$/
   return regex.test(url)
-}
-
-export const isInternalUrl = (url: string): boolean => {
-  return !/^(https?:\/\/|www\.)/.test(url)
 }
