@@ -20,6 +20,7 @@ type Props = {
 const getSpanValues = (layout: string): number[] => {
   const layoutRatios: { [key: string]: number[] } = {
     '25-25-25-25': [6, 6, 6, 6],
+    '25-50-25': [6, 12, 6],
     '25-75': [6, 18],
     '33-33-33': [8, 8, 8],
     '33-66': [8, 16],
