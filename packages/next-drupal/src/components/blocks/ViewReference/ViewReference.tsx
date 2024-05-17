@@ -98,7 +98,7 @@ const ViewReference: React.FC<ViewReferenceProps> = ({ node, paragraph }) => {
   const pageParam = useMemo(() => `page-${hashId}`, [hashId])
   // Get page from search params
   const page = useMemo(
-    () => Number(searchParams.get(pageParam) || 1),
+    () => Number(searchParams?.get(pageParam) || 1),
     [searchParams, pageParam],
   )
   // Construct view params
