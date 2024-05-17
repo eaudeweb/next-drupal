@@ -71,7 +71,7 @@ export const useSearchApp = (
   const searchParams = useSearchParams()
   const router = useRouter()
   const qsParam = `qs-${searchIndex}`
-  const qs = searchParams.get(qsParam) || ''
+  const qs = searchParams?.get(qsParam) || ''
   const djap = new DrupalJsonApiParams(qs)
 
   const currentQueryObject = djap.getQueryObject()
