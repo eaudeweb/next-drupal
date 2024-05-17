@@ -4,18 +4,25 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react'
 
-import { FetchOptions } from 'next-drupal'
-
 import { drupal } from '../lib/drupal'
+import { Params, getViewContent } from '../lib/drupal/view'
 
-export function useDrupalApi(
-  path: string,
-  opts?: { manualTrigger?: boolean } & FetchOptions,
+type Options = {
+  cacheId?: string
+  manualTrigger?: boolean
+}
+
+export function useDrupalViewApi(
+  viewId: string,
+  params?: Params,
+  opts?: Options,
   deps?: DependencyList,
 ) {
+  const cache = useRef<Record<string, any>>({})
   const [state, setState] = useState<any>({
     data: null,
     error: null,
@@ -24,27 +31,31 @@ export function useDrupalApi(
   })
 
   const getData = useCallback(
-    async (opts?: FetchOptions) => {
+    async (params?: Params, opts?: Options) => {
       if (!drupal) return
 
       setState((state) => ({ ...state, loaded: false, loading: true }))
 
-      const url = drupal.buildUrl(path)
-
       let result: any = null
-      const response = await drupal.fetch(url.toString(), {
-        ...(opts || {}),
-      })
-
       try {
-        result = await response.json()
+        const cacheId = opts?.cacheId || ''
+        result =
+          cache.current[cacheId] || (await getViewContent(viewId, params))
+        setState((state) => ({
+          ...state,
+          data: result,
+          error: null,
+          loaded: true,
+          loading: false,
+        }))
+        if (opts?.cacheId) {
+          cache.current[opts.cacheId] = result
+        }
       } catch (error) {
         result = {
-          message: response.statusText,
+          message: error.message,
+          statusCode: error.statusCode,
         }
-      }
-
-      if (!response.ok) {
         setState((state) => ({
           ...state,
           data: null,
@@ -52,26 +63,17 @@ export function useDrupalApi(
           loaded: false,
           loading: false,
         }))
-        return
       }
-
-      setState((state) => ({
-        ...state,
-        data: result,
-        error: null,
-        loaded: true,
-        loading: false,
-      }))
     },
-    [path],
+    [viewId],
   )
 
   const value = useMemo(() => ({ ...state, getData }), [state, getData])
 
   useEffect(() => {
     if (opts?.manualTrigger) return
-    getData(opts)
-  }, [getData, opts, deps])
+    getData(params, opts)
+  }, [getData, params, opts, deps])
 
   return value
 }

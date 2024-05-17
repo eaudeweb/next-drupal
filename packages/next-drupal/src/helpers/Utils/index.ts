@@ -7,6 +7,20 @@ export function debounce(func: any, wait: number = 300, id?: string) {
   timer[name] = setTimeout(func, wait)
 }
 
+export function stringToHash(string: string) {
+  let hash = 0
+
+  if (string.length == 0) return hash
+
+  for (let i = 0; i < string.length; i++) {
+    const char = string.charCodeAt(i)
+    hash = (hash << 5) - hash + char
+    hash = hash & hash
+  }
+
+  return hash
+}
+
 export const kebabCase = (string: string) =>
   string
     .replace(/([a-z])([A-Z])/g, '$1-$2')

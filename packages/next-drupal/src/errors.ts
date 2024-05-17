@@ -22,8 +22,8 @@ export class BackendError extends Error {
 }
 
 export class NotFoundError extends BackendError {
-  constructor(options?: MaybeHasCause) {
-    super('Not found', options)
+  constructor(message?: string, options?: MaybeHasCause) {
+    super(message || 'Not found', options)
 
     this.name = 'NotFoundError'
     this.statusCode = 404
@@ -31,8 +31,8 @@ export class NotFoundError extends BackendError {
 }
 
 export class UnauthorizedError extends BackendError {
-  constructor(options?: MaybeHasCause) {
-    super('Unauthorized', options)
+  constructor(message?: string, options?: MaybeHasCause) {
+    super(message || 'Unauthorized', options)
 
     this.name = 'UnauthorizedError'
     this.statusCode = 401
@@ -40,8 +40,8 @@ export class UnauthorizedError extends BackendError {
 }
 
 export class ForbiddenError extends BackendError {
-  constructor(options?: MaybeHasCause) {
-    super('Forbidden', options)
+  constructor(message?: string, options?: MaybeHasCause) {
+    super(message || 'Forbidden', options)
 
     this.name = 'ForbiddenError'
     this.statusCode = 403

@@ -23,7 +23,7 @@ const ScrollTarget: React.FC<ScrollTargetProps> = ({ dependencies }) => {
     setIsFirstLoad(false)
   }, [])
 
-  return <div ref={scrollTarget}></div>
+  return <div className="scroll-target" ref={scrollTarget} />
 }
 
 export default ScrollTarget

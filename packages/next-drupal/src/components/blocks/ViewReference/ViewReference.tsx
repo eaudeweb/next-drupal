@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { Skeleton } from 'antd'
-import classnames from 'classnames'
-import { DrupalNode } from 'next-drupal'
+import cx from 'classnames'
+import { DrupalNode, DrupalView } from 'next-drupal'
+import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 
 import config from '@edw/next-drupal/config'
 
-import { getViewContent } from '@edw/next-drupal/lib/drupal/view'
+import { stringToHash } from '@edw/next-drupal/helpers'
+import { useDrupalViewApi } from '@edw/next-drupal/hooks'
+import { Params } from '@edw/next-drupal/lib/drupal/view'
 
 interface ViewReferenceProps {
   node: DrupalNode
@@ -26,13 +30,15 @@ interface ViewOptions {
   }
 }
 
-interface FetchContentParams {
-  currentPage: number
-  hasPaginatedListing: boolean
+export type ViewComponentProps = {
+  hashId: string
   node: DrupalNode
-  paramsConfig: ParamsConfig
-  setIsLoading: (loading: boolean) => void
-  setViewContent: (content: any) => void
+  onPageChange: (page: number) => void
+  page: number
+  pageSize: number
+  total: number
+  type: string
+  view: DrupalView
   viewId: string
 }
 
@@ -59,78 +65,126 @@ const constructOptions = (
   }
 }
 
-const fetchViewContentAsync = async ({
-  currentPage,
-  hasPaginatedListing,
-  node,
-  paramsConfig,
-  setIsLoading,
-  setViewContent,
-  viewId,
-}: FetchContentParams): Promise<void> => {
-  setIsLoading(true)
-  const options = constructOptions(paramsConfig, node)
-  const paginationOptions: any = {
-    ...options,
-    params: { ...options.params, page: currentPage - 1 },
-  }
-
-  try {
-    const content = await getViewContent(
-      viewId,
-      hasPaginatedListing ? paginationOptions : options,
-    )
-    setViewContent(content)
-  } catch (error) {
-    console.error('Error fetching view content:', error)
-  } finally {
-    setIsLoading(false)
-  }
+const getViewId = (field_view: any): string => {
+  if (!field_view?.resourceIdObjMeta) return ''
+  const targetId = field_view.resourceIdObjMeta.drupal_internal__target_id
+  const displayId = field_view.resourceIdObjMeta.display_id
+  return `${targetId}--${displayId}`
 }
 
 const ViewReference: React.FC<ViewReferenceProps> = ({ node, paragraph }) => {
+  // Refs for scrolling
+  const triggerScroll = useRef<boolean>(false)
+  const scrollEl = useRef<HTMLDivElement>(null)
+  // Get paragraph data
   const { field_title, field_view, type } = paragraph || {}
-  const viewTargetId = field_view?.resourceIdObjMeta?.drupal_internal__target_id
-  const viewDisplayId = field_view?.resourceIdObjMeta?.display_id
-  const viewId =
-    viewTargetId && viewDisplayId ? `${viewTargetId}--${viewDisplayId}` : ''
+  // Get router and search params for pagination purposes
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  // Get view id and hash id
+  const viewId = useMemo(() => getViewId(field_view), [field_view])
+  // Get view config
+  const viewConfig = useMemo(
+    () => config?.drupal?.paragraphs?.[type]?.templates?.[viewId] || {},
+    [type, viewId],
+  )
+  // Get hash id
+  const hashId = useMemo(
+    () =>
+      viewConfig.uid || paragraph?.drupal_internal__id || stringToHash(viewId),
+    [viewConfig, viewId, paragraph],
+  )
+  // Get page param
+  const pageParam = useMemo(() => `page-${hashId}`, [hashId])
+  // Get page from search params
+  const page = useMemo(
+    () => Number(searchParams.get(pageParam) || 1),
+    [searchParams, pageParam],
+  )
+  // Construct view params
+  const params = useMemo(() => {
+    const options = constructOptions(viewConfig.params, node)
+    if (page && options.params) options.params.page = page - 1
+    return options.params as Params
+  }, [node, viewConfig, page])
+  // Fetch opts
+  const opts = useMemo(
+    () => ({
+      cacheId: `${pageParam}__${page}`,
+    }),
+    [pageParam, page],
+  )
+  // Fetch view data
+  const { data, error, loading } = useDrupalViewApi(viewId, params, opts)
+  // Get page size
+  const pageSize = useMemo(() => {
+    // Notations:
+    // - TC = Total Count
+    // - CPS = Page Size
+    // - CTC = Current Total Count
+    // - R = Remainder
+    // - PS = Page Size
+    const PS = viewConfig.pageSize || 5
+    if (!data) return PS
+    const TC = Number(data.meta.count)
+    const CPS = data.results.length
+    const CTC = page * CPS
 
-  const [viewContent, setViewContent] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [currentPage, setCurrentPage] = useState(1)
+    // Case I. There is only one page - return the CPS
+    if (CPS === TC) return CPS
+    // Case II. We are on the last page and CTC is equal to TC - return CPS
+    if (CTC === TC) return CPS
+    return PS
+    // @todo: Implement the following logic
+    // Case III. CTC < TC. Try to find a potential page size
+    // a. We are not on the last page
+    if (TC % CPS < CPS) return CPS
+    // b. We are on the last page
+    return Math.floor(TC / CTC) + CPS
+  }, [data, page, viewConfig])
 
-  const hasPaginatedListing =
-    config?.drupal?.paragraphs?.[type]?.templates?.[viewId]?.isPaginatedListing
-  const paramsConfig =
-    config?.drupal?.paragraphs?.[type]?.templates?.[viewId]?.params
+  // Handle page change
+  const onPageChange = useCallback(
+    (page: number) => {
+      triggerScroll.current = true
+      router.push(
+        {
+          query: {
+            ...router.query,
+            [`page-${hashId}`]: page.toString(),
+          },
+        },
+        undefined,
+        { scroll: false, shallow: true },
+      )
+    },
+    [router, hashId],
+  )
 
   useEffect(() => {
-    if (!viewId) return
-    fetchViewContentAsync({
-      currentPage,
-      hasPaginatedListing,
-      node,
-      paramsConfig,
-      setIsLoading,
-      setViewContent,
-      viewId,
-    })
-  }, [viewId, node, paramsConfig, currentPage, hasPaginatedListing])
-
-  if (!viewId) return <p>View parameters not set</p>
-  if (isLoading) return <Skeleton paragraph={{ rows: 8 }} active />
-  if (!viewContent) return <p>There is no content for this view id: {viewId}</p>
+    if (triggerScroll.current && scrollEl.current) {
+      const offset = 48 // 3rem
+      const top = scrollEl.current.getBoundingClientRect().top
+      const scrollY = top + window.scrollY - offset
+      window.scrollTo({ behavior: 'smooth', top: scrollY })
+      triggerScroll.current = false
+    }
+  }, [data])
 
   const ViewComponent =
     config?.drupal?.paragraphs?.[type]?.templates?.[viewId]?.view
 
-  if (!ViewComponent) return <p>There is no reference view for id: {viewId}</p>
+  if (!ViewComponent)
+    return <p>Error: there is no view component for viewId: {viewId}</p>
+  if (error) return <p>Error: {error.message}</p>
+  if (!data && loading) return <Skeleton paragraph={{ rows: 8 }} active />
 
   return (
     <>
+      <div className="scroll-target" ref={scrollEl} />
       {field_title && (
         <h4
-          className={classnames({
+          className={cx({
             [`view-reference__title--${viewId}`]: viewId,
             'view-reference__title': true,
           })}
@@ -138,13 +192,19 @@ const ViewReference: React.FC<ViewReferenceProps> = ({ node, paragraph }) => {
           {field_title}
         </h4>
       )}
-      <ViewComponent
-        currentPage={currentPage}
-        node={node}
-        setPage={setCurrentPage}
-        type={type}
-        view={viewContent}
-      />
+      {data && (
+        <ViewComponent
+          hashId={hashId}
+          node={node}
+          page={page}
+          pageSize={pageSize}
+          total={data?.meta.count ?? 0}
+          type={type}
+          view={data}
+          viewId={viewId}
+          onPageChange={onPageChange}
+        />
+      )}
     </>
   )
 }

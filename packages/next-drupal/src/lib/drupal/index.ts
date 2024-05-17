@@ -1,5 +1,3 @@
-// @ts-nocheck
-// @todo Miu: remove ts-nocheck
 import Jsona from 'jsona'
 
 import DrupalClient from './DrupalClient'

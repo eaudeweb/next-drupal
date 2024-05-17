@@ -4,14 +4,13 @@ import type {
   SearchEngineResults,
 } from '../types'
 import type { DrupalNode } from 'next-drupal'
-import type { NextRouter } from 'next/router'
 
 import React from 'react'
 
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { DrupalJsonApiParams } from 'drupal-jsonapi-params'
+import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
-import { parse } from 'querystring'
 
 import { deserialize } from './drupal'
 import { applyFilter, getCurrentPage, queryHasConditions } from './search-utils'
@@ -36,21 +35,6 @@ const initialData: SearchEngineResults = {
     count: 1,
     facets: [],
   },
-}
-
-const isClient = typeof window !== 'undefined'
-
-// This solves the problem that on the client the router is initialized with an empty query
-const getLocationSearch = (router: NextRouter): string => {
-  let search
-  if (isClient) {
-    search = window.location.search
-    const parsed = parse(search || '')
-    search = parsed['?qs'] || ''
-  } else {
-    search = router.query.qs || ''
-  }
-  return search.toString()
 }
 
 const DEFAULT_PAGE_SIZE = '10'
@@ -80,8 +64,10 @@ export const useSearchApp = (
   searchIndex: string,
   appConfig: SearchAppConfig,
 ): SearchAppData => {
+  const searchParams = useSearchParams()
   const router = useRouter()
-  const qs = getLocationSearch(router)
+  const qsParam = `qs-${searchIndex}`
+  const qs = searchParams.get(qsParam) || ''
   const djap = new DrupalJsonApiParams(qs)
 
   const currentQueryObject = djap.getQueryObject()
@@ -210,7 +196,7 @@ export const useSearchApp = (
       router.push(
         {
           pathname: router.pathname,
-          query: { ...router.query, qs: updatedQS },
+          query: { ...router.query, [qsParam]: updatedQS },
         },
         undefined,
         {
@@ -219,7 +205,7 @@ export const useSearchApp = (
         },
       )
     },
-    [router],
+    [router, qsParam],
   )
 
   const onChangeField = React.useCallback(
@@ -231,7 +217,7 @@ export const useSearchApp = (
         {
           query: {
             ...router.query,
-            qs,
+            [qsParam]: qs,
             // ...(qs ? { qs } : {}),
           },
         },
@@ -242,7 +228,7 @@ export const useSearchApp = (
         },
       )
     },
-    [router, appConfig],
+    [router, appConfig, qsParam],
   )
 
   const onChangeMultipleFields = React.useCallback(
@@ -256,7 +242,7 @@ export const useSearchApp = (
         {
           query: {
             ...router.query,
-            qs: updatedQS,
+            [qsParam]: updatedQS,
           },
         },
         undefined,
@@ -266,14 +252,17 @@ export const useSearchApp = (
         },
       )
     },
-    [router, appConfig],
+    [router, appConfig, qsParam],
   )
 
   const resetFilters = React.useCallback(() => {
+    const query = { ...router.query }
+    delete query[qsParam]
     router.push(
       {
         pathname: router.pathname,
         query: {
+          ...query,
           slug: router.query.slug,
         },
       },
@@ -283,7 +272,7 @@ export const useSearchApp = (
         shallow: true,
       },
     )
-  }, [router])
+  }, [router, qsParam])
 
   const onChangePage = React.useCallback(
     (page: number, pageSize?: number) => {
@@ -301,7 +290,7 @@ export const useSearchApp = (
         {
           query: {
             ...router.query,
-            qs,
+            [qsParam]: qs,
           },
         },
         undefined,
@@ -311,7 +300,7 @@ export const useSearchApp = (
         },
       )
     },
-    [appConfig, router],
+    [appConfig, router, qsParam],
   )
 
   const searchText = (parsedQuery?.filter as any)?.fulltext

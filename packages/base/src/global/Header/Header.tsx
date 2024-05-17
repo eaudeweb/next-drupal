@@ -62,7 +62,7 @@ function findMenuItemAndParent(items: any, pathname: null | string) {
 
 const createSearchUrl = (searchText: string, baseUrl: string) => {
   const queryParams = new URLSearchParams({
-    qs: `filter[fulltext]=${encodeURIComponent(searchText)}&page[limit]=10&page[offset]=0`,
+    'qs-global_search': `filter[fulltext]=${encodeURIComponent(searchText)}&page[limit]=10&page[offset]=0`,
   })
   return `${baseUrl}?${queryParams.toString()}`
 }
