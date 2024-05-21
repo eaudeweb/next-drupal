@@ -118,29 +118,16 @@ const ViewReference: React.FC<ViewReferenceProps> = ({ node, paragraph }) => {
   const { data, error, loading } = useDrupalViewApi(viewId, params, opts)
   // Get page size
   const pageSize = useMemo(() => {
-    // Notations:
-    // - TC = Total Count
-    // - CPS = Page Size
-    // - CTC = Current Total Count
-    // - R = Remainder
-    // - PS = Page Size
-    const PS = viewConfig.pageSize || 5
-    if (!data) return PS
-    const TC = Number(data.meta.count)
-    const CPS = data.results.length
-    const CTC = page * CPS
-
-    // Case I. There is only one page - return the CPS
-    if (CPS === TC) return CPS
-    // Case II. We are on the last page and CTC is equal to TC - return CPS
-    if (CTC === TC) return CPS
-    return PS
-    // @todo: Implement the following logic
-    // Case III. CTC < TC. Try to find a potential page size
-    // a. We are not on the last page
-    if (TC % CPS < CPS) return CPS
-    // b. We are on the last page
-    return Math.floor(TC / CTC) + CPS
+    if (!data) return 0
+    const next = data.links?.next
+    const prev = data.links?.prev
+    if ((!next && !prev) || next) {
+      return data.results.length
+    }
+    if (!next && prev) {
+      return (data.meta.count - data.results.length) / (page - 1)
+    }
+    return viewConfig.pageSize || 5
   }, [data, page, viewConfig])
 
   // Handle page change
