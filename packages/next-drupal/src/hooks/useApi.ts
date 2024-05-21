@@ -12,6 +12,7 @@ const defaultHeaders: { [key: string]: { [key: string]: any } } = {
     Accept: 'application/json',
   },
   del: {},
+  get: {},
   patch: {
     'Content-Type': 'application/json',
   },
@@ -21,7 +22,6 @@ const defaultHeaders: { [key: string]: { [key: string]: any } } = {
   put: {
     'Content-Type': 'application/json',
   },
-  get: {},
 }
 
 export function useApi(
