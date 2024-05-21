@@ -21,44 +21,7 @@ const emailValidation = ({ name, required }) => {
 }
 
 const friendlycaptchaValidation = () => {
-  return yup
-    .string()
-    .test('captcha', 'Captcha verification is invalid', async (solution) => {
-      if (process.env.NODE_ENV === 'development') {
-        return true
-      }
-      const body = new FormData()
-      body.append(
-        'secret',
-        process.env.NEXT_PUBLIC_FRIENDLYCAPTCHA_SECRET || '',
-      )
-      body.append(
-        'sitekey',
-        process.env.NEXT_PUBLIC_FRIENDLYCAPTCHA_SITEKEY || '',
-      )
-      body.append('solution', solution || '')
-
-      try {
-        const response = await fetch(
-          'https://api.friendlycaptcha.com/api/v1/siteverify',
-          {
-            body,
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            method: 'POST',
-          },
-        )
-        const result: any = await response.text()
-        if (result?.success) {
-          return true
-        }
-        return false
-      } catch (e) {
-        return false
-      }
-    })
-    .required('Captcha verification is required')
+  return yup.string().required('Captcha verification is required')
 }
 
 // Validations mapping
