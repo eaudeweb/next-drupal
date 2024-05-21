@@ -4,10 +4,8 @@ import cx from 'classnames'
 
 import WidgetError from '../../theme/Errors/WidgetError'
 
-const FRIENDLYCAPTCHA_SITEKEY: string = process?.env
-  ?.NEXT_PUBLIC_FRIENDLYCAPTCHA_SITEKEY
-  ? process.env.NEXT_PUBLIC_FRIENDLYCAPTCHA_SITEKEY
-  : ''
+const FRIENDLYCAPTCHA_SITEKEY: string =
+  process.env.NEXT_PUBLIC_FRIENDLYCAPTCHA_SITEKEY || ''
 
 export function CaptchaWidget({ id, InputProps = {}, error }: any) {
   const captchaRef: any = useRef(null)
@@ -28,7 +26,7 @@ export function CaptchaWidget({ id, InputProps = {}, error }: any) {
             onChange.current(value)
           },
           errorCallback: () => {
-            onChange.current(true)
+            onChange.current()
           },
           sitekey: FRIENDLYCAPTCHA_SITEKEY,
         })

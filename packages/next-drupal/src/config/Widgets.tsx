@@ -10,8 +10,8 @@ export const defaultWidget = TextWidget
 // Widgets mapping
 export const widgetsMapping = {
   type: {
-    captcha: CaptchaWidget,
     email: EmailWidget,
+    headless_captcha: CaptchaWidget,
     text: defaultWidget,
     textarea: TextareaWidget,
     textfield: defaultWidget,
