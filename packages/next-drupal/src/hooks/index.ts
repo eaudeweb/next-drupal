@@ -1,4 +1,5 @@
 export * from './useAntdBreakpoints'
+export * from './useApi'
 export * from './useAppState'
 export * from './useContentItems'
 export * from './useDebouncedValue'
