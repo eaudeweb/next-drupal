@@ -36,7 +36,7 @@ export function useApi(
     loading: false,
   })
 
-  const getData = useCallback(
+  const api = useCallback(
     async (opts?: RequestInit) => {
       setState((state) => ({ ...state, loaded: false, loading: true }))
 
@@ -82,12 +82,12 @@ export function useApi(
     [path],
   )
 
-  const value = useMemo(() => ({ ...state, getData }), [state, getData])
+  const value = useMemo(() => ({ ...state, api }), [state, api])
 
   useEffect(() => {
     if (opts?.manualTrigger) return
-    getData(opts)
-  }, [getData, opts, deps])
+    api(opts)
+  }, [api, opts, deps])
 
   return value
 }

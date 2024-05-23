@@ -30,7 +30,7 @@ export function useDrupalViewApi(
     loading: false,
   })
 
-  const getData = useCallback(
+  const api = useCallback(
     async (params?: Params, opts?: Options) => {
       if (!drupal) return
 
@@ -68,12 +68,12 @@ export function useDrupalViewApi(
     [viewId],
   )
 
-  const value = useMemo(() => ({ ...state, getData }), [state, getData])
+  const value = useMemo(() => ({ ...state, api }), [state, api])
 
   useEffect(() => {
     if (opts?.manualTrigger) return
-    getData(params, opts)
-  }, [getData, params, opts, deps])
+    api(params, opts)
+  }, [api, params, opts, deps])
 
   return value
 }
