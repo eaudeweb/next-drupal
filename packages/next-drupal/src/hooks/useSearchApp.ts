@@ -195,7 +195,7 @@ export const useSearchApp = (
   const onChangeSort = React.useCallback(
     (field: string) => {
       // create a new instance of DrupalJsonApiParams with the current query string
-      const currentQuery = new DrupalJsonApiParams(router.query.qs || '')
+      const currentQuery = new DrupalJsonApiParams(router.query[qsParam] || '')
 
       // extract the current query object and manually remove the sort parameter
       const currentQueryObject = currentQuery.getQueryObject()
@@ -230,7 +230,7 @@ export const useSearchApp = (
   const onChangeField = React.useCallback(
     (id: string, value: any) => {
       // console.log(id, value, 'changing with id value')
-      const qs = applyFilter(router.query.qs || '', appConfig, id, value)
+      const qs = applyFilter(router.query[qsParam] || '', appConfig, id, value)
 
       router.push(
         {
@@ -252,7 +252,7 @@ export const useSearchApp = (
 
   const onChangeMultipleFields = React.useCallback(
     (fields: object) => {
-      let updatedQS = router.query.qs || ''
+      let updatedQS = router.query[qsParam] || ''
 
       Object.entries(fields).forEach(([id, value]) => {
         updatedQS = applyFilter(updatedQS, appConfig, id, value)
@@ -298,7 +298,7 @@ export const useSearchApp = (
       const query = { ...router.query }
       delete query.slug
 
-      const djap = new DrupalJsonApiParams(query.qs || {})
+      const djap = new DrupalJsonApiParams(query[qsParam] || {})
       pageSize = pageSize || appConfig.pageSize || parseInt(DEFAULT_PAGE_SIZE)
       pageSize = typeof pageSize === 'number' ? pageSize : parseInt(pageSize)
       djap.addPageLimit(pageSize)
