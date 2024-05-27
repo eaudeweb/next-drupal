@@ -108,9 +108,7 @@ export const useSearchApp = (
     }
   }
 
-  const todayDate = new Date(
-    new Date().setDate(new Date().getDate()),
-  )
+  const todayDate = new Date(new Date().setDate(new Date().getDate()))
     .toISOString()
     .split('T')[0]
 
