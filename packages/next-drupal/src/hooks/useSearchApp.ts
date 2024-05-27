@@ -87,6 +87,7 @@ export const useSearchApp = (
     djap.addInclude(include)
   }
 
+  // @todo Super ugly hardcodings below. This needs to be within the app, not here, refactor ASAP.
   // Apply default sort if no sort parameter is present
   // DECISIONS SORT
   if (
@@ -107,9 +108,25 @@ export const useSearchApp = (
     }
   }
 
+  const todayDate = new Date(
+    new Date().setDate(new Date().getDate()),
+  )
+    .toISOString()
+    .split('T')[0]
+
   // NEWS SORT
-  if (searchIndex === 'news' && sort?.date?.field) {
-    djap.addSort(sort.date.field)
+  if (searchIndex === 'news') {
+    if (sort?.date?.field) {
+      djap.addSort(sort.date.field)
+    }
+    djap.addFilter('field_date', todayDate, '<=')
+  }
+  // NEWS UPCOMING SORT
+  if (searchIndex === 'news_upcoming') {
+    if (sort?.date?.field) {
+      djap.addSort(sort.date.field)
+    }
+    djap.addFilter('field_date', todayDate, '>')
   }
 
   // MEETINGS
