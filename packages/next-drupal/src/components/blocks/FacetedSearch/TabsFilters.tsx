@@ -17,20 +17,20 @@ interface TabOption {
 
 interface TabsFiltersProps {
   ButtonOptionProps?: AntdButtonProps
+  hideShowAll?: boolean
   id: string
   onChange: (id: string, value: string) => void
   options: TabOption[]
-  value: string[],
-  hideShowAll?: boolean,
+  value: string[]
 }
 
 const TabsFilters: React.FC<TabsFiltersProps> = ({
   id,
   ButtonOptionProps = {},
+  hideShowAll,
   onChange,
   options,
   value,
-  hideShowAll,
 }) => {
   return (
     <div className="search-tabs-filters">
@@ -50,7 +50,7 @@ const TabsFilters: React.FC<TabsFiltersProps> = ({
         <Button
           key={option.values.value}
           className={classNames({
-            active: value.includes(option.values.value)
+            active: value.includes(option.values.value),
           })}
           shape="round"
           onClick={() => onChange(id, option.values.value)}
