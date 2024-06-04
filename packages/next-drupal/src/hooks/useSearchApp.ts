@@ -129,7 +129,7 @@ export const useSearchApp = (
   // EVENTS SORT/FILTER
   if (searchIndex === 'events') {
     if (sort?.date?.field) {
-      let dateFilter = djap.getQueryObject()?.filter?.date;
+      let dateFilter = djap.getQueryObject()?.filter?.date
 
       // If there is no date filter, default to showing upcoming events.
       if (!dateFilter) {
@@ -137,16 +137,16 @@ export const useSearchApp = (
         // into a range.
         // We need to set a future date so that the module will return
         // all future events between now and +100 years.
-        let futureDate = new Date();
-        futureDate.setFullYear(futureDate.getFullYear() + 100);
-        dateFilter = futureDate.toISOString().split('T')[0];
+        const futureDate = new Date()
+        futureDate.setFullYear(futureDate.getFullYear() + 100)
+        dateFilter = futureDate.toISOString().split('T')[0]
         djap.addFilter('date', dateFilter)
       }
 
-      let sortField = sort.date.field;
+      let sortField = sort.date.field
       // Upcoming events should be sorted chronologically.
       if (dateFilter >= todayDate) {
-        sortField = sortField.replace('-', '');
+        sortField = sortField.replace('-', '')
       }
       djap.addSort(sortField)
     }

@@ -116,9 +116,7 @@ const FacetedSearch: React.FC<FacetedSearchProps> = ({ searchIndex }) => {
                 />
               )}
               {total == 0 && appConfig.emptyText && (
-                <Flex>
-                  {appConfig.emptyText}
-                </Flex>
+                <Flex>{appConfig.emptyText}</Flex>
               )}
             </Container>
             {total > 0 && (
