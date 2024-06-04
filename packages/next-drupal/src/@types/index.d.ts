@@ -203,6 +203,7 @@ export interface SearchAppSettings {
   apps: {
     [key: string]: {
       baseUrl?: string
+      emptyText?: string
       filters: {
         rangeFilters?: object
         view: React.ComponentType
