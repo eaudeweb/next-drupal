@@ -117,7 +117,6 @@ export const useSearchApp = (
     if (sort?.date?.field) {
       djap.addSort(sort.date.field)
     }
-    djap.addFilter('field_date', todayDate, '<=')
   }
   // NEWS UPCOMING SORT
   if (searchIndex === 'news_upcoming') {
@@ -125,6 +124,13 @@ export const useSearchApp = (
       djap.addSort(sort.date.field)
     }
     djap.addFilter('field_date', todayDate, '>')
+  }
+
+  // EVENTS SORT
+  if (searchIndex === 'events') {
+    if (sort?.date?.field) {
+      djap.addSort(sort.date.field)
+    }
   }
 
   // MEETINGS
