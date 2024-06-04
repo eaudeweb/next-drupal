@@ -106,13 +106,20 @@ const FacetedSearch: React.FC<FacetedSearchProps> = ({ searchIndex }) => {
                     )}
                 </Flex>
               )}
-              <SearchListing
-                appConfig={appConfig}
-                meta={meta}
-                results={items || []}
-                searchIndex={searchIndex}
-                searchText={searchText}
-              />
+              {total > 0 && (
+                <SearchListing
+                  appConfig={appConfig}
+                  meta={meta}
+                  results={items || []}
+                  searchIndex={searchIndex}
+                  searchText={searchText}
+                />
+              )}
+              {total == 0 && appConfig.emptyText && (
+                <Flex>
+                  {appConfig.emptyText}
+                </Flex>
+              )}
             </Container>
             {total > 0 && (
               <Pagination
