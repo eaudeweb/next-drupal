@@ -177,6 +177,7 @@ export const useSearchApp = (
     }
   }
 
+  emptyQuery.page.limit = appConfig.pageSize.toString()
   const parsedQuery = { ...emptyQuery, ...djap.getQueryObject() }
   const hasQuery = queryHasConditions(parsedQuery)
 
