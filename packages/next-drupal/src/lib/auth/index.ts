@@ -18,6 +18,7 @@ import {
 } from 'next-auth/react'
 
 import { drupal } from '@edw/next-drupal/lib/drupal'
+
 import DrupalCredentialsProvider from './providers/DrupalCredentials'
 
 let broadcastChannel: BroadcastChannel | null = null
