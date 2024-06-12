@@ -1,4 +1,7 @@
-import { Session as NextAuthSession, User as NextAuthUser } from 'next-auth'
+import type {
+  Session as NextAuthSession,
+  User as NextAuthUser,
+} from 'next-auth'
 
 declare module 'next-auth' {
   interface User extends NextAuthUser {
@@ -13,6 +16,12 @@ declare module 'next-auth' {
     error?: {
       message: string
       statusCode: number
+    }
+    user?: {
+      email?: null | string
+      image?: null | string
+      name?: null | string
+      permissions?: Record<string, boolean>
     }
   }
 }

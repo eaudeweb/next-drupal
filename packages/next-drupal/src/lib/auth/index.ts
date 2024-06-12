@@ -1,6 +1,7 @@
 /* eslint-disable turbo/no-undeclared-env-vars */
 import type { NextAuthOptions, Session } from 'next-auth'
 
+import { jwtDecode } from 'jwt-decode'
 import NextAuth from 'next-auth'
 import { JWT } from 'next-auth/jwt'
 import {
@@ -95,7 +96,6 @@ async function refreshAccessToken(token: JWT) {
   const data = await response.json()
 
   if (!response.ok) {
-    console.log(response)
     return {
       error: {
         message: response.statusText,
@@ -116,21 +116,32 @@ async function refreshAccessToken(token: JWT) {
 export const authOptions = {
   callbacks: {
     async jwt({ account, token, user }) {
+      let data: any = {}
+      try {
+        data = jwtDecode(user?.access_token || token?.access_token || '')
+      } catch (e) {
+        console.log(e)
+      }
       // Initial sign in
       if (account && user) {
         return {
           access_token: user.access_token,
-          email: user.email,
+          email: data.mail || user.email,
           expires_in: Date.now() + (user.expires_in || 0) * 1000,
           // expires_in: Date.now() + 5 * 1000,
           name: user.name,
+          permissions: data.permissions,
           refresh_token: user.refresh_token,
         }
       }
 
       // Return previous token if the access token has not expired yet
       if (Date.now() < (token.expires_in || 0)) {
-        return token
+        return {
+          ...token,
+          email: data.mail,
+          permissions: data.permissions,
+        }
       }
 
       // Access token has expired, try to update it
@@ -144,9 +155,11 @@ export const authOptions = {
           error: token.error,
         }
       }
+
       session.user = {
         email: token.email,
         name: token.name,
+        permissions: (token.permissions || {}) as Record<string, boolean>,
       }
       session.access_token = token.access_token
       session.access_token_expires = token.expires_in
