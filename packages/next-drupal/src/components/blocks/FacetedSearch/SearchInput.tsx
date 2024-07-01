@@ -27,6 +27,9 @@ const SearchInput: React.FC<SearchInputProps> = ({
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setInputValue(e.target.value)
+      if (e.type === 'click') {
+        onChange(id, '')
+      }
     },
     [id, onChange],
   )
